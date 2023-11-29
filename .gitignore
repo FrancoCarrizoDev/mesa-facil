@@ -37,6 +37,8 @@ next-env.d.ts
 
 .vercel
 
-/postgres/*
+/postgres
+
+
 
 /prisma/migrations/*
