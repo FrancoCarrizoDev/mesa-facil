@@ -39,6 +39,6 @@ next-env.d.ts
 
 /postgres
 
-
+*tmp*
 
 /prisma/migrations/*
