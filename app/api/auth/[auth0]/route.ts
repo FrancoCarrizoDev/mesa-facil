@@ -1,20 +1,32 @@
+import prisma from "@/lib/prisma";
 import {
   handleAuth,
   Session,
   handleLogin,
   handleCallback,
 } from "@auth0/nextjs-auth0";
+import { uuid } from "uuidv4";
 import { NextApiRequest } from "next";
 
 const afterCallback = async (req: NextApiRequest, session: Session) => {
   try {
-    // find user by email in primsa db
-    // if user not found, create new user
-    console.log({ session });
+    const { user } = session;
+    const foundUser = await prisma.user.findUnique({
+      where: {
+        email: user.email,
+      },
+    });
 
-    // const foundUser = await prisma.user.findUnique({
+    if (!foundUser) {
+      await prisma.user.create({
+        data: {
+          email: user.email,
+          id: uuid(),
+          username: user.nickname,
+        },
+      });
+    }
 
-    // })
     return session;
   } catch (err) {
     const newSession: Session = {

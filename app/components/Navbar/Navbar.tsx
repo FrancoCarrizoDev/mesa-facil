@@ -3,6 +3,7 @@ import Image from "next/image";
 
 async function Navbar() {
   const { user } = (await getSession()) ?? {};
+  console.log({ user });
   return (
     <section className="bg-blue-chill-50 border-b-2 border-blue-chill-200">
       <div className="flex justify-between items-center p-2">
