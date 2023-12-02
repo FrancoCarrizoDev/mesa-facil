@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/postgres
 /.pnp
 .pnp.js
 .yarn/install-state.gz
@@ -37,7 +38,7 @@ next-env.d.ts
 
 .vercel
 
-/postgres
+
 
 *tmp*
 
