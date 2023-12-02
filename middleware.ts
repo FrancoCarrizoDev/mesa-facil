@@ -6,41 +6,28 @@ export async function middleware(request: NextRequest) {
   const res = NextResponse.next();
   const currentUrl = request.url;
   const { pathname } = request.nextUrl;
-  const { user } = (await getSession(request, res)) ?? {};
+  const { user, accessToken } = (await getSession(request, res)) ?? {};
 
   if (pathname.includes("api") && !pathname.includes("auth")) {
-    const token = request.headers.get("Authorization");
-    if (token) {
-      return await authenticateRequest(token);
+    if (accessToken) {
+      return await authenticateRequest(accessToken);
     } else {
-      return (
-        NextResponse.json({
-          success: false,
-          message: "Authentication failed: No token given",
-        }),
-        { status: 401, headers: { "content-type": "application/json" } }
+      const response = NextResponse.redirect(
+        new URL("/", request.nextUrl.origin)
       );
+      response.cookies.set("loginRequired", "true");
+      return response;
     }
   }
 
   if (pathname.includes("logout")) {
     res.cookies.delete("loginRequired");
+    res.cookies.delete("tokenExpired");
     return res;
   }
   if (currentUrl.endsWith("/") && user) {
     const nextUrl = new URL("/private", request.nextUrl.origin);
     return NextResponse.redirect(nextUrl);
-  }
-
-  if (request.url.endsWith("/private")) {
-    if (!user) {
-      const nextUrl = new URL("/", request.nextUrl.origin);
-      const response = NextResponse.redirect(nextUrl);
-      response.cookies.set("loginRequired", "true");
-      return response;
-    }
-
-    return NextResponse.next();
   }
 }
 
@@ -52,10 +39,18 @@ async function authenticateRequest(token: string) {
   const jwks = jose.createRemoteJWKSet(new URL(process.env.AUTH0_JWKS_URI!));
   try {
     await jose.jwtVerify(token.replace("Bearer ", ""), jwks);
-
     return NextResponse.next();
-  } catch (error) {
-    console.log({ error });
+  } catch (error: any) {
+    console.log({ error: JSON.stringify(error) });
+
+    if (error?.code === "ERR_JWT_EXPIRED") {
+      const response = NextResponse.redirect(
+        new URL("/api/auth/logout", process.env.AUTH0_BASE_URL)
+      );
+      response.cookies.set("tokenExpired", "true");
+      return response;
+    }
+
     return new NextResponse(
       JSON.stringify({
         success: false,
