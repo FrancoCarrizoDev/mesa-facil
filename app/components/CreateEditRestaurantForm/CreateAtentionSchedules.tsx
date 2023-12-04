@@ -55,7 +55,7 @@ export default function CreateAtentionSchedules({
     <>
       <Select
         value={weekDayId}
-        label="Horarios"
+        label="Horarios de reserva"
         options={WEEK_DAYS.map((day) => ({
           value: day.id,
           label: day.weekDay,
@@ -65,9 +65,9 @@ export default function CreateAtentionSchedules({
         }}
       />
 
-      <div className="flex gap-2">
+      <div className="flex items-baseline gap-2">
         <TextField
-          label="Desde"
+          label="Apertura"
           type="time"
           value={openingTime}
           onChange={(e) => {
@@ -76,21 +76,14 @@ export default function CreateAtentionSchedules({
           required
         />
         <TextField
-          label="hasta"
+          label="Cierre"
           type="time"
           value={closingTime}
           onChange={(e) => {
             setClosingTime(e.target.value);
           }}
         />
-        <div className="mt-auto">
-          <Button
-            type="button"
-            onClick={handleAddAttentionSchedule}
-            text="AGREGAR"
-          />
-        </div>
-        <div className="flex items-center mt-auto">
+        <div className="flex items-center mt-auto pb-2">
           <input
             id="default-checkbox"
             type="checkbox"
@@ -104,9 +97,17 @@ export default function CreateAtentionSchedules({
             htmlFor="default-checkbox"
             className="ms-2 text-sm font-sm text-gray-950"
           >
-            Repetir para los demas dias
+            Todos los días
           </label>
         </div>
+      </div>
+      <div className="mt-auto flex">
+        <Button
+          type="button"
+          onClick={handleAddAttentionSchedule}
+          text="AGREGAR"
+          fullWidth="true"
+        />
       </div>
     </>
   );

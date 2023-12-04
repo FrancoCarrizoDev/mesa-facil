@@ -11,6 +11,7 @@ import { NextApiRequest } from "next";
 const afterCallback = async (req: NextApiRequest, session: Session) => {
   try {
     const { user } = session;
+
     const foundUser = await prisma.user.findUnique({
       where: {
         email: user.email,
@@ -18,13 +19,23 @@ const afterCallback = async (req: NextApiRequest, session: Session) => {
     });
 
     if (!foundUser) {
+      const newUserId = uuid();
       await prisma.user.create({
         data: {
           email: user.email,
-          id: uuid(),
+          id: newUserId,
           username: user.nickname,
         },
       });
+      session.user = {
+        ...session.user,
+        id: newUserId,
+      };
+    } else {
+      session.user = {
+        ...session.user,
+        id: foundUser.id,
+      };
     }
 
     return session;

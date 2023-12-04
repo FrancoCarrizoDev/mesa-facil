@@ -8,6 +8,7 @@ type Props = {
   readonly placeholder?: string;
   readonly onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   readonly pattern?: string;
+  readonly name?: string;
 };
 
 export default function TextField({
@@ -18,6 +19,7 @@ export default function TextField({
   required = false,
   placeholder = "",
   pattern = undefined,
+  name,
 }: Props) {
   return (
     <div>
@@ -36,6 +38,7 @@ export default function TextField({
         value={value}
         required={required}
         pattern={pattern}
+        name={name}
       />
     </div>
   );
