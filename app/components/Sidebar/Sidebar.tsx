@@ -5,7 +5,7 @@ export default function Sidebar() {
   return (
     <aside className="bg-blue-chill-50 h-full border-r-2 border-blue-chill-200">
       <nav>
-        <ul className="text-blue-chill-900 ps-3 pt-3">
+        <ul className="text-blue-chill-900 text-sm ps-3 pt-3">
           <li>
             <Link href={"/private"}>Inicio</Link>
           </li>
