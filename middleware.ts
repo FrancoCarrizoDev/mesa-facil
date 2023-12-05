@@ -14,7 +14,6 @@ export async function middleware(request: NextRequest) {
   const goToLogin = pathname.includes("login");
   const goToAuth = pathname.includes("api/auth");
   const { user, idToken, accessToken } = (await getSession(request, res)) ?? {};
-  res.cookies.set("appSession", idToken?.toString() ?? "");
 
   if (pathname.includes("api")) {
     if (goToAuth || goToLogin) return;
@@ -34,7 +33,6 @@ export async function middleware(request: NextRequest) {
 
     if (validateToken.code === "ERR_JWT_EXPIRED") {
       res.cookies.set("tokenExpired", "true");
-      return NextResponse.redirect("/api/auth/logout");
       return NextResponse.json(
         { success: false, message: "authentication failed" },
         { status: 401 }

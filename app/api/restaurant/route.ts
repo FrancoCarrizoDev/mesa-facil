@@ -55,7 +55,7 @@ export const POST = async (req: Request) => {
           id: uuid(),
           start: schedule.openingTime,
           end: schedule.closingTime,
-          day: schedule.weekDay,
+          day: schedule.day,
           restaurantId: newRestaurantId,
         },
       });
@@ -75,10 +75,47 @@ export const POST = async (req: Request) => {
 
 export const GET = async (req: Request) => {
   try {
-    return Response.json({
-      message: "Restaurant created",
-      status: 201,
+    // @ts-ignore
+    const { user } = (await getSession(req)) ?? {};
+
+    if (!user) {
+      return Response.json(
+        {
+          message: "Bad Request",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    const existsUser = await prisma.user.findUnique({
+      where: {
+        id: user.id,
+      },
     });
+
+    if (!existsUser) {
+      return Response.json(
+        {
+          message: "Bad Request",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    const restaurants = await prisma.restaurant.findMany({
+      where: {
+        userId: user.id,
+      },
+      include: {
+        attentionSchedule: true,
+      },
+    });
+
+    return Response.json(restaurants);
   } catch (error) {
     console.log(error);
     return Response.json({

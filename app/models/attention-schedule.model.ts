@@ -1,8 +1,8 @@
 export interface AttentionSchedule {
   id?: string;
-  weekDay: string;
-  openingTime: string;
-  closingTime: string;
+  day: string;
+  start: string;
+  end: string;
   restaurantId?: string | null;
 }
 

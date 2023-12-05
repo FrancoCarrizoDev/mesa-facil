@@ -26,7 +26,7 @@ export default function CreateEditRestaurantForm() {
 
   const filterAttentionSchedule = (attentionSchedule: AttentionSchedule[]) => {
     return attentionSchedule.filter((schedule) => {
-      if (schedule.weekDay !== attentionScheduleToEdit?.weekDay) {
+      if (schedule.day !== attentionScheduleToEdit?.day) {
         return true;
       }
 
@@ -40,9 +40,9 @@ export default function CreateEditRestaurantForm() {
   const checkIfAttentionScheduleIsColliding = (
     attentionSchedule: AttentionSchedule
   ) => {
-    const weekDay = attentionSchedule.weekDay;
+    const weekDay = attentionSchedule.day;
     const filteredAttentionScheduleByWeekDay = values.attentionSchedule.filter(
-      (schedule) => schedule.weekDay === weekDay
+      (schedule) => schedule.day === weekDay
     );
     return filteredAttentionScheduleByWeekDay.some((schedule) => {
       const openingTime = parseInt(schedule.openingTime.split(":")[0]);
@@ -65,8 +65,8 @@ export default function CreateEditRestaurantForm() {
 
   const sortAttentionScheduleByWeekDayAndOpeningTime = useMemo(() => {
     return values.attentionSchedule.sort((a, b) => {
-      const weekDayA = WEEK_DAYS.find((day) => day.weekDay === a.weekDay)!.id;
-      const weekDayB = WEEK_DAYS.find((day) => day.weekDay === b.weekDay)!.id;
+      const weekDayA = WEEK_DAYS.find((day) => day.weekDay === a.day)!.id;
+      const weekDayB = WEEK_DAYS.find((day) => day.weekDay === b.day)!.id;
       if (weekDayA > weekDayB) {
         return 1;
       }
@@ -211,7 +211,7 @@ export default function CreateEditRestaurantForm() {
           </div>
           {values.attentionSchedule.length > 0 ? (
             sortAttentionScheduleByWeekDayAndOpeningTime.map(
-              ({ weekDay, closingTime, openingTime }) => (
+              ({ day: weekDay, closingTime, openingTime }) => (
                 <div
                   key={weekDay + openingTime}
                   className="flex justify-between items-center pt-1"
@@ -228,7 +228,7 @@ export default function CreateEditRestaurantForm() {
                       size="xs"
                       onClick={() => {
                         setAttentionScheduleToEdit({
-                          weekDay,
+                          day: weekDay,
                           openingTime,
                           closingTime,
                         });

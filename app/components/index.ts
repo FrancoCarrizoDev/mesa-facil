@@ -6,3 +6,4 @@ export * from "./Select";
 export * from "./Sidebar";
 export * from "./TextField";
 export * from "./ToastifyProvider";
+export * from "./RestaurantCard";

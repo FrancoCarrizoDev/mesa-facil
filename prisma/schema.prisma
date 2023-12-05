@@ -22,6 +22,7 @@ model Restaurant {
   attentionSchedule AttentionSchedule[]
   user User @relation(fields: [userId], references: [id])
   userId String @db.Uuid
+  slug String? @unique
 }
 
 model AttentionSchedule {

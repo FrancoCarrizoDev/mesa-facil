@@ -13,18 +13,3 @@ export async function createRestaurant(restaurant: Restaurant) {
   );
   return response.json();
 }
-
-export async function getRestaurants(): Promise<Restaurant[]> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_AUTH0_BASE_URL}/api/restaurant`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  return response.json();
-}

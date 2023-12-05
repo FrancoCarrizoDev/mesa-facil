@@ -6,4 +6,5 @@ export interface Restaurant {
   phone: string;
   address: string;
   attentionSchedule: AttentionSchedule[];
+  slug?: string;
 }
