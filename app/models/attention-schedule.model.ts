@@ -7,7 +7,7 @@ export interface AttentionSchedule {
 }
 
 export interface AttentionScheduleDTO {
-  openingTime: string;
-  closingTime: string;
+  start: string;
+  open: string;
   weekDayId: number;
 }

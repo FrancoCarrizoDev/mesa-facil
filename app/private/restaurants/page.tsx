@@ -22,7 +22,6 @@ export async function getRestaurants(): Promise<Restaurant[]> {
 
 export default async function Page() {
   const restaurants = await getRestaurants();
-  console.log(JSON.stringify(restaurants));
   return (
     <div>
       <h2 className="font-semibold text-lg mb-3">Mis Restaurantes</h2>

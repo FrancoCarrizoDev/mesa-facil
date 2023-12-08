@@ -24,16 +24,16 @@ export default function CreateAtentionSchedules({
     setWeekDayId(
       WEEK_DAYS.find((day) => day.weekDay === initialAttentionSchedule.day)!.id
     );
-    setOpeningTime(initialAttentionSchedule.openingTime);
-    setClosingTime(initialAttentionSchedule.closingTime);
+    setOpeningTime(initialAttentionSchedule.start);
+    setClosingTime(initialAttentionSchedule.end);
   }, [initialAttentionSchedule]);
 
   const handleAddAttentionSchedule = () => {
     if (repeatForOtherDays) {
       const mapDays = WEEK_DAYS.map((day) => ({
-        weekDay: day.weekDay,
-        openingTime,
-        closingTime,
+        day: day.weekDay,
+        start: openingTime,
+        end: closingTime,
       }));
 
       onChange(mapDays);
@@ -43,8 +43,8 @@ export default function CreateAtentionSchedules({
 
     const attentionSchedule: AttentionSchedule = {
       day: WEEK_DAYS.find((day) => day.id === weekDayId)!.weekDay,
-      openingTime,
-      closingTime,
+      start: openingTime,
+      end: closingTime,
     };
 
     onChange(attentionSchedule);

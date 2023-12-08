@@ -1,5 +1,9 @@
+import {
+  CreateEditRestaurantForm,
+  RestaurantCard,
+  SectionTitle,
+} from "@/app/components";
 import { getRestaurantById } from "@/app/actions/actions";
-import { RestaurantCard } from "@/app/components";
 import React from "react";
 
 export default async function Page({
@@ -9,11 +13,11 @@ export default async function Page({
 }) {
   const response = await getRestaurantById({ id: params.id });
   const restaurant = await response.json();
-  console.log({ restaurant });
 
   return (
-    <div>
-      <RestaurantCard {...restaurant} />
-    </div>
+    <section className="w-full border rounded-md p-5 bg-blue-chill-100 border-blue-chill-400">
+      <SectionTitle title="Editar Restaurante" />
+      <CreateEditRestaurantForm restaurant={restaurant} />
+    </section>
   );
 }

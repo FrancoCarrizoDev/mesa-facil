@@ -9,6 +9,7 @@ import { WEEK_DAYS } from "@/app/constants";
 import { checkIfClosingTimeIsBeforeOpeningTime } from "./utils";
 import { createRestaurant } from "@/app/services/restaurant.service";
 import { toast } from "react-toastify";
+
 const INITIAL_VALUES: Restaurant = {
   id: "1",
   name: "",
@@ -17,9 +18,15 @@ const INITIAL_VALUES: Restaurant = {
   attentionSchedule: [],
 };
 
-export default function CreateEditRestaurantForm() {
+export default function CreateEditRestaurantForm({
+  restaurant,
+}: {
+  readonly restaurant?: Restaurant;
+}) {
   const router = useRouter();
-  const { values, onChange } = useForm<Restaurant>(INITIAL_VALUES);
+  const { values, onChange } = useForm<Restaurant>(
+    restaurant ?? INITIAL_VALUES
+  );
   const [attentionScheduleToEdit, setAttentionScheduleToEdit] = useState<
     AttentionSchedule | undefined
   >();
@@ -31,8 +38,8 @@ export default function CreateEditRestaurantForm() {
       }
 
       return (
-        schedule.openingTime !== attentionScheduleToEdit?.openingTime &&
-        schedule.closingTime !== attentionScheduleToEdit?.closingTime
+        schedule.start !== attentionScheduleToEdit?.start &&
+        schedule.end !== attentionScheduleToEdit?.end
       );
     });
   };
@@ -45,14 +52,10 @@ export default function CreateEditRestaurantForm() {
       (schedule) => schedule.day === weekDay
     );
     return filteredAttentionScheduleByWeekDay.some((schedule) => {
-      const openingTime = parseInt(schedule.openingTime.split(":")[0]);
-      const closingTime = parseInt(schedule.closingTime.split(":")[0]);
-      const newOpeningTime = parseInt(
-        attentionSchedule.openingTime.split(":")[0]
-      );
-      const newClosingTime = parseInt(
-        attentionSchedule.closingTime.split(":")[0]
-      );
+      const openingTime = parseInt(schedule.start.split(":")[0]);
+      const closingTime = parseInt(schedule.end.split(":")[0]);
+      const newOpeningTime = parseInt(attentionSchedule.start.split(":")[0]);
+      const newClosingTime = parseInt(attentionSchedule.end.split(":")[0]);
       if (newOpeningTime >= openingTime && newOpeningTime <= closingTime) {
         return true;
       }
@@ -73,8 +76,8 @@ export default function CreateEditRestaurantForm() {
       if (weekDayA < weekDayB) {
         return -1;
       }
-      const openingTimeA = parseInt(a.openingTime.split(":")[0]);
-      const openingTimeB = parseInt(b.openingTime.split(":")[0]);
+      const openingTimeA = parseInt(a.start.split(":")[0]);
+      const openingTimeB = parseInt(b.start.split(":")[0]);
       if (openingTimeA > openingTimeB) {
         return 1;
       }
@@ -136,8 +139,6 @@ export default function CreateEditRestaurantForm() {
     e.preventDefault();
     try {
       const response = await createRestaurant(values);
-
-      debugger;
 
       if (response.status !== 201) {
         toast("Error al crear el restaurante", { type: "error" });
@@ -211,14 +212,14 @@ export default function CreateEditRestaurantForm() {
           </div>
           {values.attentionSchedule.length > 0 ? (
             sortAttentionScheduleByWeekDayAndOpeningTime.map(
-              ({ day: weekDay, closingTime, openingTime }) => (
+              ({ day, end, start }) => (
                 <div
-                  key={weekDay + openingTime}
+                  key={day + start}
                   className="flex justify-between items-center pt-1"
                 >
                   <div className="w-full flex items-center justify-between pe-3">
-                    <p className="text-xs font-medium">{weekDay}</p>
-                    <p className="text-xs font-medium">{`${openingTime}hs - ${closingTime}hs`}</p>
+                    <p className="text-xs font-medium">{day}</p>
+                    <p className="text-xs font-medium">{`${start}hs - ${end}hs`}</p>
                   </div>
                   <div className="flex gap-3">
                     <Button
@@ -228,9 +229,9 @@ export default function CreateEditRestaurantForm() {
                       size="xs"
                       onClick={() => {
                         setAttentionScheduleToEdit({
-                          day: weekDay,
-                          openingTime,
-                          closingTime,
+                          day,
+                          start,
+                          end,
                         });
                         onChange({
                           attentionSchedule: filterAttentionSchedule(

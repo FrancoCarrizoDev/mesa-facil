@@ -73,25 +73,10 @@ export default function RestaurantCard({
         </div>
       </div>
       <Link
-        href={`/restaurants/${id}`}
-        className="mt-auto inline-flex text-xs items-center text-white hover:underline"
+        href={`/reserve/${slug}`}
+        className="mt-auto flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
       >
-        Visitar sitio
-        <svg
-          className="w-3 h-3 ms-2.5 rtl:rotate-[270deg]"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 18 18"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"
-          />
-        </svg>
+        Ver sitio
       </Link>
     </div>
   );

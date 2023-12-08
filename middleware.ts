@@ -17,7 +17,6 @@ export async function middleware(request: NextRequest) {
 
   if (pathname.includes("api")) {
     if (goToAuth || goToLogin) return;
-
     if (idToken === undefined && accessToken === undefined) {
       return NextResponse.json(
         {
@@ -43,8 +42,6 @@ export async function middleware(request: NextRequest) {
     response.headers.set("Authorization", `Bearer ${accessToken}`);
     response.headers.set("X-Auth0-Access-Token", accessToken?.toString() ?? "");
     response.headers.set("Content-Type", "application/json");
-    request.cookies.set("appSession", idToken?.toString() ?? "");
-    response.cookies.set("appSession", idToken?.toString() ?? "");
 
     return response;
   }
@@ -59,10 +56,15 @@ export async function middleware(request: NextRequest) {
     if (validateToken.code === "VALID_TOKEN") {
       const nextUrl = new URL("/private", request.nextUrl.origin);
       return NextResponse.redirect(nextUrl);
+    } else {
+      const nextUrl = new URL("/", request.nextUrl.origin);
+      const response = NextResponse.redirect(nextUrl);
+      response.cookies.delete("appSession");
+      response.cookies.set("tokenExpired", "true");
+      return response;
     }
-
-    return NextResponse.next();
   }
+
   return res;
 }
 

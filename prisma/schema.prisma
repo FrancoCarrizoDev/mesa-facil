@@ -23,6 +23,7 @@ model Restaurant {
   user User @relation(fields: [userId], references: [id])
   userId String @db.Uuid
   slug String? @unique
+  @@index([slug], name: "slug")
 }
 
 model AttentionSchedule {
@@ -32,4 +33,36 @@ model AttentionSchedule {
   day String
   start String
   end String
+  reservations Reservation[]
+}
+
+model Dinner {
+  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  first_name String
+  last_name String
+  phone String
+  email String
+  birthday String
+  reservation Reservation[]
+}
+
+model Reservation {
+  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  attentionSchedule  AttentionSchedule @relation(fields: [attentionScheduleId], references: [id])
+  attentionScheduleId String @db.Uuid
+  dinner  Dinner? @relation(fields: [dinnerId], references: [id])
+  dinnerId String? @db.Uuid
+  date String
+  people String
+  message String
+  code String
+  status ReservationStatus @relation(fields: [statusId], references: [id])
+  statusId Int 
+}
+
+model ReservationStatus {
+  // auto incrementalid
+  id      Int     @id @default(autoincrement())
+  reservation Reservation[]
+  status String
 }
