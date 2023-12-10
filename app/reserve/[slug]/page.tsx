@@ -1,8 +1,7 @@
 import { getRestaurantBySlug } from "@/app/actions/actions";
 import { Reservation } from "@/app/components";
 import { Restaurant } from "@/app/models/restaurant.model";
-import { DatePicker } from "@mui/x-date-pickers";
-import React from "react";
+import { Suspense } from "react";
 
 export default async function Page({
   params,
@@ -13,8 +12,12 @@ export default async function Page({
   const restaurant: Restaurant = await response.json();
 
   return (
-    <div className="w-full min-h-screen bg-blue-chill-200 grid place-content-center">
-      <Reservation restaurant={restaurant} />
+    <div className="w-full min-h-screen  bg-blue-chill-50 ">
+      <div className="flex justify-center items-center pt-10">
+        <Suspense>
+          <Reservation restaurant={restaurant} />
+        </Suspense>
+      </div>
     </div>
   );
 }

@@ -41,8 +41,8 @@ model Dinner {
   first_name String
   last_name String
   phone String
-  email String
-  birthday String
+  email String?
+  birthday String?
   reservation Reservation[]
 }
 
