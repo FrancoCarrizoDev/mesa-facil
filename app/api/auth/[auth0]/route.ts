@@ -56,6 +56,7 @@ export const GET = handleAuth({
         audience: process.env.AUTH0_AUDIENCE,
         scope: "openid profile email",
       },
+      returnTo: "/private",
     };
   }),
   //@ts-ignore

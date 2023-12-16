@@ -152,6 +152,8 @@ export default function CreateEditRestaurantForm({
     }
   };
 
+  console.log({ values });
+
   return (
     <form
       className="mt-5 flex flex-col justify-between"
@@ -232,6 +234,9 @@ export default function CreateEditRestaurantForm({
                           day,
                           start,
                           end,
+                          dayNumber: WEEK_DAYS.find(
+                            (weekDay) => weekDay.weekDay === day
+                          )!.id,
                         });
                         onChange({
                           attentionSchedule: filterAttentionSchedule(

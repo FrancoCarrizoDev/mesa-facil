@@ -2,6 +2,7 @@ import { Restaurant } from "@/app/models/restaurant.model";
 import { getSession } from "@auth0/nextjs-auth0";
 import prisma from "@/lib/prisma";
 import { uuid } from "uuidv4";
+import slugify from "slugify";
 
 export const POST = async (req: Request) => {
   // @ts-ignore
@@ -42,6 +43,7 @@ export const POST = async (req: Request) => {
       data: {
         id: newRestaurantId,
         name: body.name,
+        slug: slugify(body.name, { lower: true, remove: /[*+~.()'"!:@]/g }),
         address: body.address,
         phone: body.phone,
         attentionSchedule: {},
@@ -53,9 +55,10 @@ export const POST = async (req: Request) => {
       await prisma.attentionSchedule.create({
         data: {
           id: uuid(),
-          start: schedule.openingTime,
-          end: schedule.closingTime,
+          start: schedule.start,
+          end: schedule.end,
           day: schedule.day,
+          dayNumber: schedule.dayNumber,
           restaurantId: newRestaurantId,
         },
       });

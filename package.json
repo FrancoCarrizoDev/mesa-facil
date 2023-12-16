@@ -22,6 +22,7 @@
     "react-datepicker": "^4.24.0",
     "react-dom": "18.2.0",
     "react-toastify": "^9.1.3",
+    "slugify": "^1.6.6",
     "uuidv4": "^6.2.13",
     "zod": "^3.22.4"
   },

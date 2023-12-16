@@ -8,64 +8,57 @@ interface ErrorToken {
 }
 
 export async function middleware(request: NextRequest) {
-  const res = NextResponse.next();
-  const currentUrl = request.url;
-  const { pathname } = request.nextUrl;
-  const goToLogin = pathname.includes("login");
-  const goToAuth = pathname.includes("api/auth");
-  const { user, idToken, accessToken } = (await getSession(request, res)) ?? {};
-
-  if (pathname.includes("api")) {
-    if (goToAuth || goToLogin) return;
-    if (idToken === undefined && accessToken === undefined) {
-      return NextResponse.json(
-        {
-          error: "Unauthorized",
-        },
-        {
-          status: 401,
-        }
-      );
-    }
-
-    const validateToken = await authenticateRequest(idToken!, request);
-
-    if (validateToken.code === "ERR_JWT_EXPIRED") {
-      res.cookies.set("tokenExpired", "true");
-      return NextResponse.json(
-        { success: false, message: "authentication failed" },
-        { status: 401 }
-      );
-    }
-
-    const response = NextResponse.next();
-    response.headers.set("Authorization", `Bearer ${accessToken}`);
-    response.headers.set("X-Auth0-Access-Token", accessToken?.toString() ?? "");
-    response.headers.set("Content-Type", "application/json");
-
-    return response;
-  }
-
-  if (pathname.includes("logout")) {
-    res.cookies.delete("loginRequired");
-    res.cookies.delete("tokenExpired");
-    return res;
-  }
-  if (currentUrl.endsWith("/") && user && idToken) {
-    const validateToken = await authenticateRequest(idToken, request);
-    if (validateToken.code === "VALID_TOKEN") {
-      const nextUrl = new URL("/private", request.nextUrl.origin);
-      return NextResponse.redirect(nextUrl);
-    } else {
-      const nextUrl = new URL("/", request.nextUrl.origin);
-      const response = NextResponse.redirect(nextUrl);
-      response.cookies.delete("appSession");
-      response.cookies.set("tokenExpired", "true");
-      return response;
-    }
-  }
-
-  return res;
+  // const res = NextResponse.next();
+  // const currentUrl = request.url;
+  // const { pathname } = request.nextUrl;
+  // const goToLogin = pathname.includes("login");
+  // const goToAuth = pathname.includes("api/auth");
+  // const { user, idToken, accessToken } = (await getSession(request, res)) ?? {};
+  // if (pathname.includes("api")) {
+  //   if (goToAuth || goToLogin) return;
+  //   if (idToken === undefined && accessToken === undefined) {
+  //     return NextResponse.json(
+  //       {
+  //         error: "Unauthorized",
+  //       },
+  //       {
+  //         status: 401,
+  //       }
+  //     );
+  //   }
+  //   const validateToken = await authenticateRequest(idToken!, request);
+  //   if (validateToken.code === "ERR_JWT_EXPIRED") {
+  //     res.cookies.set("tokenExpired", "true");
+  //     return NextResponse.json(
+  //       { success: false, message: "authentication failed" },
+  //       { status: 401 }
+  //     );
+  //   }
+  //   const response = NextResponse.next();
+  //   response.headers.set("Authorization", `Bearer ${accessToken}`);
+  //   response.headers.set("X-Auth0-Access-Token", accessToken?.toString() ?? "");
+  //   response.headers.set("Content-Type", "application/json");
+  //   return response;
+  // }
+  // if (pathname.includes("logout")) {
+  //   res.cookies.delete("loginRequired");
+  //   res.cookies.delete("tokenExpired");
+  //   return res;
+  // }
+  // if (currentUrl.endsWith("/") && user && idToken) {
+  //   const validateToken = await authenticateRequest(idToken, request);
+  //   if (validateToken.code === "VALID_TOKEN") {
+  //     const nextUrl = new URL("/private", request.nextUrl.origin);
+  //     return NextResponse.redirect(nextUrl);
+  //   } else {
+  //     const nextUrl = new URL("/", request.nextUrl.origin);
+  //     const response = NextResponse.redirect(nextUrl);
+  //     response.cookies.delete("appSession");
+  //     response.cookies.set("tokenExpired", "true");
+  //     return response;
+  //   }
+  // }
+  // return res;
 }
 
 export const config = {

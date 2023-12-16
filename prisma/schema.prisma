@@ -31,6 +31,7 @@ model AttentionSchedule {
   restaurant  Restaurant @relation(fields: [restaurantId], references: [id])
   restaurantId String @db.Uuid
   day String
+  dayNumber Int
   start String
   end String
   reservations Reservation[]
