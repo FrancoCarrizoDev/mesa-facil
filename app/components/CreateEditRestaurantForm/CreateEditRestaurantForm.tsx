@@ -31,16 +31,16 @@ export default function CreateEditRestaurantForm({
     AttentionSchedule | undefined
   >();
 
-  const filterAttentionSchedule = (attentionSchedule: AttentionSchedule[]) => {
+  const filterAttentionSchedule = (
+    attentionSchedule: AttentionSchedule[],
+    { day, start, end }: AttentionSchedule
+  ) => {
     return attentionSchedule.filter((schedule) => {
-      if (schedule.day !== attentionScheduleToEdit?.day) {
+      if (schedule.day !== day) {
         return true;
       }
 
-      return (
-        schedule.start !== attentionScheduleToEdit?.start &&
-        schedule.end !== attentionScheduleToEdit?.end
-      );
+      return schedule.start !== start && schedule.end !== end;
     });
   };
 
@@ -240,7 +240,15 @@ export default function CreateEditRestaurantForm({
                         });
                         onChange({
                           attentionSchedule: filterAttentionSchedule(
-                            values.attentionSchedule
+                            values.attentionSchedule,
+                            {
+                              day,
+                              start,
+                              end,
+                              dayNumber: WEEK_DAYS.find(
+                                (weekDay) => weekDay.weekDay === day
+                              )!.id,
+                            }
                           ),
                         });
                       }}
@@ -253,7 +261,15 @@ export default function CreateEditRestaurantForm({
                       onClick={() => {
                         onChange({
                           attentionSchedule: filterAttentionSchedule(
-                            values.attentionSchedule
+                            values.attentionSchedule,
+                            {
+                              day,
+                              start,
+                              end,
+                              dayNumber: WEEK_DAYS.find(
+                                (weekDay) => weekDay.weekDay === day
+                              )!.id,
+                            }
                           ),
                         });
                       }}
