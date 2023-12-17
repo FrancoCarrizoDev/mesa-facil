@@ -4,6 +4,7 @@ import {
   Session,
   handleLogin,
   handleCallback,
+  handleLogout,
 } from "@auth0/nextjs-auth0";
 import { uuid } from "uuidv4";
 import { NextApiRequest } from "next";
@@ -51,14 +52,23 @@ const afterCallback = async (req: NextApiRequest, session: Session) => {
 
 export const GET = handleAuth({
   login: handleLogin((req) => {
+    const querys = new URLSearchParams(req.url?.split("?")[1]);
+    const redirectTo = querys.get("redirectTo");
     return {
       authorizationParams: {
         audience: process.env.AUTH0_AUDIENCE,
         scope: "openid profile email",
       },
-      returnTo: "/private",
+      returnTo: redirectTo ?? "/private",
     };
   }),
   //@ts-ignore
   callback: handleCallback({ afterCallback }),
+  logout: handleLogout((req) => {
+    const querys = new URLSearchParams(req.url?.split("?")[1]);
+    const redirectTo = querys.get("redirectTo");
+    return {
+      returnTo: redirectTo ?? "/",
+    };
+  }),
 });

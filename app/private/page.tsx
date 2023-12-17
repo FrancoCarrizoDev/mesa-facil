@@ -1,27 +1,10 @@
-import { Restaurant } from "@prisma/client";
 import Link from "next/link";
-import { cookies } from "next/headers";
-
-export async function getRestaurants(): Promise<Restaurant[]> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_AUTH0_BASE_URL}/api/restaurant`,
-    {
-      cache: "no-store",
-      headers: {
-        cookie: `appSession=${cookies().get("appSession")?.value}`,
-      },
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  return response.json();
-}
+import { getRestaurantsByUserId } from "../actions/restaurants";
+import { getSession } from "@auth0/nextjs-auth0/edge";
 
 export default async function Private() {
-  const restaurants = await getRestaurants();
+  const { user } = (await getSession()) ?? {};
+  const restaurants = await getRestaurantsByUserId(user?.id);
 
   return (
     <section className="w-full border rounded-md p-5 bg-blue-chill-100 border-blue-chill-400">

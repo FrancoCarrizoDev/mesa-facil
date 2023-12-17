@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
+  // read loginRequired cookie
   const { user } = (await getSession()) ?? {};
   const cookieStore = cookies();
   const loginRequired = cookieStore.get("loginRequired")?.value ?? false;

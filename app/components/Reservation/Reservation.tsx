@@ -10,7 +10,6 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import { Button } from "..";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
-import subDays from "date-fns/subDays";
 import addDays from "date-fns/addDays";
 import { WEEK_DAYS } from "@/app/constants";
 registerLocale("es", es);
@@ -108,8 +107,46 @@ export default function Reservation({
           </div>
         </div>
         <div className="flex flex-col gap-1">
+          <label htmlFor="first_name">Dejanos tu nombre</label>
+          <div>
+            <input
+              className="border text-center border-blue-chill-500 rounded-md p-1"
+              type="text"
+              name="first_name"
+              id="first_name"
+              value={values.people}
+              onChange={(e) => onChange({ people: e.target.value })}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col gap-1">
+          <label htmlFor="last_name">Dejanos tu apellido</label>
+          <div>
+            <input
+              className="border text-center border-blue-chill-500 rounded-md p-1"
+              type="text"
+              name="last_name"
+              id="last_name"
+              value={values.people}
+              onChange={(e) => onChange({ people: e.target.value })}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col gap-1">
+          <label htmlFor="email">Email</label>
+          <div>
+            <input
+              className="border text-center border-blue-chill-500 rounded-md p-1"
+              type="email"
+              name="email"
+              id="email"
+              value={values.people}
+              onChange={(e) => onChange({ people: e.target.value })}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col gap-1">
           <label htmlFor="message">Algún comentario adicional?</label>
-
           <textarea
             className="border border-blue-chill-500 rounded-md py-2 px-3 text-sm resize-none"
             name="message"

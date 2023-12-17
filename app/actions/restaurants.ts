@@ -70,6 +70,10 @@ export async function getRestaurantBySlug({ slug }: { slug: string }) {
       },
     });
 
+    if (restaurant === null) {
+      return new Response("Not found", { status: 404 });
+    }
+
     return Response.json(restaurant);
   } catch (error) {
     console.log(error);

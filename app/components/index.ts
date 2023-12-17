@@ -1,5 +1,6 @@
 export * from "./Button";
 export * from "./CreateEditRestaurantForm";
+export * from "./DinnerNavbar";
 export * from "./Navbar";
 export * from "./Reservation";
 export * from "./RestaurantCard";

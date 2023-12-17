@@ -12,12 +12,10 @@ export default async function Page({
   const restaurant: Restaurant = await response.json();
 
   return (
-    <div className="w-full min-h-screen  bg-blue-chill-50 ">
-      <div className="flex justify-center items-center pt-10">
-        <Suspense>
-          <Reservation restaurant={restaurant} />
-        </Suspense>
-      </div>
+    <div className="flex justify-center items-center pt-10">
+      <Suspense>
+        <Reservation restaurant={restaurant} />
+      </Suspense>
     </div>
   );
 }
