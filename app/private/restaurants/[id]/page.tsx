@@ -3,7 +3,7 @@ import {
   RestaurantCard,
   SectionTitle,
 } from "@/app/components";
-import { getRestaurantById } from "@/app/actions/actions";
+import { getRestaurantById } from "@/app/actions/restaurants";
 import React from "react";
 
 export default async function Page({

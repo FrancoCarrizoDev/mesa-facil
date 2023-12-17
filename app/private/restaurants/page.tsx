@@ -1,28 +1,11 @@
+import { getRestaurantsByUserId } from "@/app/actions/restaurants";
 import { RestaurantCard } from "@/app/components";
-import { Restaurant } from "@/app/models/restaurant.model";
-import { cookies } from "next/headers";
+import { getSession } from "@auth0/nextjs-auth0";
 import Link from "next/link";
 
-export async function getRestaurants(): Promise<Restaurant[]> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_AUTH0_BASE_URL}/api/restaurant`,
-    {
-      cache: "no-store",
-      headers: {
-        cookie: `appSession=${cookies().get("appSession")?.value}`,
-      },
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  return response.json();
-}
-
 export default async function Page() {
-  const restaurants = await getRestaurants();
+  const { user } = (await getSession()) ?? {};
+  const restaurants = await getRestaurantsByUserId(user?.id);
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -38,7 +21,14 @@ export default async function Page() {
         {restaurants?.map((restaurant) => {
           return (
             <li key={restaurant.id} className="h-full">
-              <RestaurantCard {...restaurant} />
+              <RestaurantCard
+                address={restaurant.address}
+                attentionSchedule={restaurant.attentionSchedule}
+                id={restaurant.id}
+                name={restaurant.name}
+                phone={restaurant.phone}
+                slug={restaurant.slug ?? ""}
+              />
             </li>
           );
         })}

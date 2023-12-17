@@ -1,4 +1,4 @@
-import { getRestaurantBySlug } from "@/app/actions/actions";
+import { getRestaurantBySlug } from "@/app/actions/restaurants";
 import { Reservation } from "@/app/components";
 import { Restaurant } from "@/app/models/restaurant.model";
 import { Suspense } from "react";
