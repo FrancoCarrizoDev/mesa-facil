@@ -1,5 +1,6 @@
 "use server";
 import prisma from "@/lib/prisma";
+import { getSession } from "@auth0/nextjs-auth0";
 
 export const getRestaurantsByUserId = async (
   userId: string
@@ -80,5 +81,39 @@ export async function getRestaurantBySlug({ slug }: { slug: string }) {
     return Response.json({
       error,
     });
+  }
+}
+
+export async function getRestaurantsByUser() {
+  try {
+    // @ts-ignore
+    const { user } = (await getSession()) ?? {};
+
+    if (!user) {
+      return [];
+    }
+
+    const existsUser = await prisma.user.findUnique({
+      where: {
+        id: user.sub,
+      },
+    });
+
+    if (!existsUser) {
+      return [];
+    }
+
+    const restaurants = await prisma.restaurant.findMany({
+      where: {
+        userId: user.id,
+      },
+      include: {
+        attentionSchedule: true,
+      },
+    });
+
+    return restaurants;
+  } catch (error) {
+    console.log(error);
   }
 }

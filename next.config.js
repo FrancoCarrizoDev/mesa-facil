@@ -1,10 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["lh3.googleusercontent.com"],
-  },
-  experimental: {
-    esmExternals: "loose",
+    remotePatterns: [
+      {
+        hostname: "lh3.googleusercontent.com",
+        pathname: "/a/**",
+        protocol: "https",
+        port: "",
+      },
+      {
+        hostname: "s.gravatar.com",
+        pathname: "/avatar/**",
+        protocol: "https",
+        port: "",
+      },
+    ],
   },
 };
 

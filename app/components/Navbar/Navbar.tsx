@@ -1,9 +1,15 @@
 import { getSession } from "@auth0/nextjs-auth0";
+import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
 async function Navbar() {
   const { user } = (await getSession()) ?? {};
+
+  if (!user) {
+    redirect("/");
+  }
+
   return (
     <section className="bg-blue-chill-50 border-b-2 border-blue-chill-200">
       <div className="flex justify-between items-center p-2">

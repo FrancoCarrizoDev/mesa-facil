@@ -42,7 +42,6 @@ export async function middleware(request: NextRequest) {
     res.cookies.delete("tokenExpired");
     return res;
   }
-
   return res;
 }
 

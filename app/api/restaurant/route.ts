@@ -21,7 +21,7 @@ export const POST = async (req: Request) => {
 
   const existsUser = await prisma.user.findUnique({
     where: {
-      id: user.id,
+      id: user.sub,
     },
   });
 
@@ -47,7 +47,7 @@ export const POST = async (req: Request) => {
         address: body.address,
         phone: body.phone,
         attentionSchedule: {},
-        userId: user.id,
+        userId: existsUser.id,
       },
     });
 
@@ -76,10 +76,10 @@ export const POST = async (req: Request) => {
   }
 };
 
-export const GET = async (req: Request) => {
+export const GET = async (req: Request, res: Response) => {
   try {
     // @ts-ignore
-    const { user } = (await getSession(req)) ?? {};
+    const { user } = (await getSession(req, res)) ?? {};
 
     if (!user) {
       return Response.json(
@@ -94,7 +94,7 @@ export const GET = async (req: Request) => {
 
     const existsUser = await prisma.user.findUnique({
       where: {
-        id: user.id,
+        id: user.id || "",
       },
     });
 

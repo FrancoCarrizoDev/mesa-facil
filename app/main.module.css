@@ -1,0 +1,15 @@
+.image-container {
+    max-width: 100%;
+    height: auto;
+}
+
+.image-container>div {
+    position: unset !important;
+}
+
+.image-container .image {
+    object-fit: contain;
+    width: 100% !important;
+    position: relative !important;
+    height: unset !important;
+}
