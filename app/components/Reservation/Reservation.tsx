@@ -11,13 +11,14 @@ import es from "date-fns/locale/es";
 import React, { useState } from "react";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
+import { Dinner } from "@prisma/client";
 registerLocale("es", es);
 
 interface ReservationFormProps {
   id: string;
   attentionScheduleId: string;
   dinnerId?: string;
-  date: string;
+  date: string | null;
   people: number;
   message?: string;
   name?: string;
@@ -27,19 +28,20 @@ interface ReservationFormProps {
 
 export default function Reservation({
   restaurant,
+  dinner,
 }: {
   readonly restaurant: Restaurant;
+  readonly dinner: Dinner | null;
 }) {
-  const { user, isLoading } = useUser();
   const { values, onChange } = useForm<ReservationFormProps>({
     id: "-1",
     attentionScheduleId: "",
     dinnerId: undefined,
-    date: new Date().toISOString(),
+    date: null,
     people: 2,
     message: "",
   });
-  const [dinnerDate, setDinnerDate] = useState<Date | null>(new Date());
+  const [dinnerDate, setDinnerDate] = useState<Date | null>(null);
   const closedDays = WEEK_DAYS.filter(
     (day) =>
       !restaurant.attentionSchedule.some(
@@ -75,16 +77,14 @@ export default function Reservation({
     );
   };
 
-  if (isLoading) return <div>Cargando...</div>;
-
   return (
     <div className="px-10">
       <h1 className="pb-3 text-4xl font-bold text-lemon-950">
         Reservá en {restaurant.name}
       </h1>
       <p className="text-black pb-3 text-center">
-        {user
-          ? `¡Hola ${user.name}! ¿Que día te esperamos?`
+        {dinner
+          ? `¡Hola ${dinner.first_name}! ¿Que día te esperamos?`
           : `!Hola! ¿Que día quieres reservar?`}
       </p>
       <form className="flex flex-col justify-between gap-3">
@@ -163,7 +163,7 @@ export default function Reservation({
         <Button
           variant="contained"
           color="primary"
-          text={user ? "Reservar" : "Reservar sin registrarme"}
+          text={dinner ? "Reservar" : "Reservar sin registrarme"}
         />
       </form>
     </div>

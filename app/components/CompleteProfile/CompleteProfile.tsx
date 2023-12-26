@@ -45,7 +45,7 @@ export default function CompleteProfile({
 
       if (updatedUser) {
         toast.success("Perfil actualizado correctamente");
-        router.replace(`/${searchParams.get("redirectTo")}`);
+        router.replace(`/reserve/${searchParams.get("redirectTo")}`);
       }
     } catch (error) {
       toast.error("Error al actualizar el perfil");

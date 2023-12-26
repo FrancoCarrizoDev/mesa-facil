@@ -17,6 +17,7 @@ const INITIAL_VALUES: Restaurant = {
   address: "",
   phone: "",
   attentionSchedule: [],
+  slug: "",
 };
 
 export default function CreateEditRestaurantForm({
