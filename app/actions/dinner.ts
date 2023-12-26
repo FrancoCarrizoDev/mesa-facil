@@ -50,3 +50,26 @@ export async function getDinnerById(id: string): Promise<Dinner | null> {
     throw new Error(error.message);
   }
 }
+
+export async function updateDinnerById(
+  id: string,
+  data: Partial<Dinner>
+): Promise<Dinner | null> {
+  try {
+    const dinner = await prisma.dinner.update({
+      where: {
+        id,
+      },
+      data: {
+        last_name: data.last_name,
+        birthday: data.birthday,
+        phone: data.phone,
+      },
+    });
+
+    return dinner;
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+}

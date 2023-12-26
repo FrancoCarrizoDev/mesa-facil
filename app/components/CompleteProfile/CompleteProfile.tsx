@@ -1,14 +1,16 @@
 "use client";
-import { TextField } from "@/app/components";
+import { updateDinnerById } from "@/app/actions/dinner";
+import { Button, TextField } from "@/app/components";
 import { useForm } from "@/app/hooks";
-import { Claims } from "@auth0/nextjs-auth0";
+import { Dinner } from "@prisma/client";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import DatePicker from "react-datepicker";
+import { toast } from "react-toastify";
 export default function CompleteProfile({
-  user,
-  redirectTo,
+  dinner,
 }: {
-  readonly user: Claims;
-  readonly redirectTo: string;
+  readonly dinner: Dinner;
 }) {
   const { values, onChange } = useForm<{
     first_name: string;
@@ -18,15 +20,39 @@ export default function CompleteProfile({
     id: string;
     email: string;
   }>({
-    first_name: user?.name ?? "",
-    last_name: (user?.family_name as string) ?? "",
-    phone: (user?.phone as string) ?? "",
-    birthday: (user?.birthday as string) ?? "",
-    id: user?.sub ?? "",
-    email: user?.email ?? "",
+    id: dinner.id,
+    first_name: dinner.first_name,
+    last_name: dinner?.last_name ?? "",
+    phone: dinner?.phone ?? "",
+    birthday: dinner?.birthday ?? "",
+    email: dinner?.email ?? "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  console.log({ values });
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault();
+      setIsLoading(true);
+      const updatedUser = await updateDinnerById(dinner.id, {
+        birthday: values.birthday,
+        email: values.email,
+        first_name: values.first_name,
+        last_name: values.last_name,
+        phone: values.phone,
+      });
+
+      if (updatedUser) {
+        toast.success("Perfil actualizado correctamente");
+        router.replace(`/${searchParams.get("redirectTo")}`);
+      }
+    } catch (error) {
+      toast.error("Error al actualizar el perfil");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="p-10 flex flex-col justify-center items-center">
@@ -35,12 +61,12 @@ export default function CompleteProfile({
         Por favor completa tu perfil para poder{" "}
         <span className="font-bold">reservar</span>
       </p>
-      <form className="mt-5 grid">
+      <form className="mt-5 grid" onSubmit={handleSubmit}>
         <TextField
           label="Email"
           placeholder="Email"
           onChange={() => {
-            onChange({ email: user?.email ?? "" });
+            onChange({ email: dinner?.email ?? "" });
           }}
           value={values.email}
           name="email"
@@ -51,7 +77,7 @@ export default function CompleteProfile({
           label="Nombre"
           placeholder="Nombre"
           onChange={() => {
-            onChange({ first_name: user?.name ?? "" });
+            onChange({ first_name: dinner?.last_name ?? "" });
           }}
           value={values.first_name}
           name="name"
@@ -78,17 +104,6 @@ export default function CompleteProfile({
           name="phone"
           emoji="👈"
         />
-        {/* <TextField
-          label="Día de cumpleaños"
-          placeholder="10/10/1990"
-          onChange={(e) => {
-            onChange({ birthday: new Date(e.target.value).toISOString() });
-          }}
-          value={values.birthday}
-          name="date"
-          type="date"
-          emoji="👈"
-        /> */}
         <div className="flex flex-col">
           <label
             htmlFor="birthday"
@@ -112,6 +127,15 @@ export default function CompleteProfile({
               dropdownMode="select"
             />
             <span>👈</span>
+          </div>
+          <div className="mt-5 w-full">
+            <Button
+              type="submit"
+              text="Guardar"
+              color="primary"
+              fullWidth={"true"}
+              disabled={isLoading}
+            />
           </div>
         </div>
       </form>

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import "./main.module.css";
-import { PricingSection } from "./components";
+import { PricingSection } from "../components";
 import Link from "next/link";
 
 export const metadata: Metadata = {

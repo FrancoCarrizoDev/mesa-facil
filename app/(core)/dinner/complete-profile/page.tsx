@@ -6,12 +6,11 @@ import { notFound, redirect } from "next/navigation";
 export default async function Page({
   searchParams,
 }: {
-  searchParams?: {
+  readonly searchParams?: {
     [key: string]: string | string[] | undefined;
   };
 }) {
   const { user } = (await getSession()) ?? {};
-  const redirectTo = searchParams?.redirectTo as string;
 
   if (!user) {
     return redirect("/api/auth/login");
@@ -25,7 +24,7 @@ export default async function Page({
 
   return (
     <div>
-      <CompleteProfile redirectTo={redirectTo} user={user} />
+      <CompleteProfile dinner={dinner} />
     </div>
   );
 }

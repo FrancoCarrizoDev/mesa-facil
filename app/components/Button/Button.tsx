@@ -9,7 +9,7 @@ type ButtonProps = {
   readonly fullWidth?: "true" | "false";
 };
 
-export default function Button({
+export default function fButton({
   onClick,
   text,
   type,
