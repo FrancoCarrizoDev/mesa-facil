@@ -11,12 +11,12 @@ async function Navbar() {
   }
 
   return (
-    <section className="bg-blue-chill-50 border-b-2 border-blue-chill-200">
+    <section className="bg-lemon-50 border-b-2 border-lemon-200">
       <div className="flex justify-between items-center p-2">
         <h1 className="text-xl font-bold">MesaFacil</h1>
         <div className="flex items-center gap-3">
           <nav>
-            <ul className="flex text-blue-chill-900 text-sm gap-3">
+            <ul className="flex text-lemon-900 text-sm gap-3">
               <li>
                 <Link href={"/private"}>Inicio</Link>
               </li>

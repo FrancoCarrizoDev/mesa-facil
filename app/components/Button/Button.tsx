@@ -20,8 +20,8 @@ export default function Button({
   fullWidth = "false",
 }: ButtonProps) {
   const colorClasses = {
-    primary: "bg-blue-chill-400",
-    secondary: "bg-blue-chill-100",
+    primary: "bg-orange-400",
+    secondary: "bg-orange-100",
     tertiary: "bg-white",
     error: "bg-red-500",
     warning: "bg-yellow-300",
@@ -36,13 +36,13 @@ export default function Button({
 
   const variantClasses = {
     contained: "border rounded-md",
-    outlined: "border border-blue-chill-300 rounded-md",
+    outlined: "border border-orange-300 rounded-md",
     text: "",
   };
 
   const hoverClasses = {
-    primary: "hover:bg-blue-chill-500",
-    secondary: "hover:bg-blue-chill-200",
+    primary: "hover:bg-orange-500",
+    secondary: "hover:bg-orange-200",
     tertiary: "hover:bg-gray-200",
     error: "hover:bg-red-600",
     warning: "hover:bg-yellow-400",
@@ -68,7 +68,9 @@ export default function Button({
         paddingClasses[size]
       } ${colorClasses[color]} ${sizeClasses[size]} ${
         variantClasses[variant]
-      } ${hoverClasses[color]}  ${fullWidthClasses[fullWidth]} `}
+      } ${hoverClasses[color]}  ${
+        fullWidthClasses[fullWidth]
+      } transitions duration-300 ease-in-out`}
       disabled={disabled}
     >
       {text}

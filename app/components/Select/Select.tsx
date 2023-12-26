@@ -36,7 +36,7 @@ export default function Select({
       </label>
       <select
         id={label}
-        className={`bg-blue-chill-50 border border-blue-chill-200 p-2   text-blue-chill-950 rounded-md block w-full ${sizeClasses[size]}`}
+        className={`bg-lemon-50 border border-lemon-200 p-2   text-lemon-950 rounded-md block w-full ${sizeClasses[size]}`}
         required={required}
         onChange={onChange}
         value={value}

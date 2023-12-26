@@ -67,7 +67,7 @@ const config: Config = {
         "800": "#723b13",
         "900": "#633112",
       },
-      "orange-roughy": {
+      orange: {
         "50": "#fef8ee",
         "100": "#feefd6",
         "200": "#fcdcac",

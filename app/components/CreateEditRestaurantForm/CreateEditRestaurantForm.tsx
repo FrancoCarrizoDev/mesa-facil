@@ -154,8 +154,6 @@ export default function CreateEditRestaurantForm({
     }
   };
 
-  console.log({ values });
-
   return (
     <form
       className="mt-5 flex flex-col justify-between"
@@ -209,10 +207,10 @@ export default function CreateEditRestaurantForm({
         </div>
       </div>
       <div className="pe-6">
-        <div className="w-1/2 border border-blue-chill-500 rounded-md p-3">
+        <div className="w-1/2 border border-lemon-500 rounded-md p-3">
           <div className="max-w-fit">
             <h3 className="font-bold ">Horarios de reserva cargados</h3>
-            <hr className="w-full border-blue-chill-300 pt-1 pb-3" />
+            <hr className="w-full border-lemon-300 pt-1 pb-3" />
           </div>
           {values.attentionSchedule.length > 0 ? (
             sortAttentionScheduleByWeekDayAndOpeningTime.map(
