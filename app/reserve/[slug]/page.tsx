@@ -1,15 +1,32 @@
+import { checkIncompleteProfile } from "@/app/actions/dinner";
 import { getRestaurantBySlug } from "@/app/actions/restaurants";
 import { Reservation } from "@/app/components";
-import { Restaurant } from "@/app/models/restaurant.model";
+import { getSession } from "@auth0/nextjs-auth0";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import NotFound from "./not-found";
 
 export default async function Page({
   params,
 }: {
   readonly params: { slug: string };
 }) {
-  const response = await getRestaurantBySlug({ slug: params.slug });
-  const restaurant: Restaurant = await response.json();
+  const restaurant = await getRestaurantBySlug({ slug: params.slug });
+
+  if (!restaurant) {
+    return NotFound();
+  }
+
+  const { user } = (await getSession()) ?? {};
+
+  if (user) {
+    const incompleteProfile = await checkIncompleteProfile(user);
+    if (incompleteProfile) {
+      return redirect(
+        `/dinner/complete-profile?redirectTo=/reserve/${params.slug}`
+      );
+    }
+  }
 
   return (
     <div className="flex justify-center items-center pt-10">

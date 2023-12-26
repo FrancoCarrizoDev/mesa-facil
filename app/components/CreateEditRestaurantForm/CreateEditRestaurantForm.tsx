@@ -9,6 +9,7 @@ import { WEEK_DAYS } from "@/app/constants";
 import { checkIfClosingTimeIsBeforeOpeningTime } from "./utils";
 import { createRestaurant } from "@/app/services/restaurant.service";
 import { toast } from "react-toastify";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 const INITIAL_VALUES: Restaurant = {
   id: "1",
@@ -24,6 +25,7 @@ export default function CreateEditRestaurantForm({
   readonly restaurant?: Restaurant;
 }) {
   const router = useRouter();
+  const { user, isLoading } = useUser();
   const { values, onChange } = useForm<Restaurant>(
     restaurant ?? INITIAL_VALUES
   );

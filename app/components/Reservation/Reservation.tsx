@@ -1,18 +1,29 @@
 "use client";
-import { useForm } from "@/app/hooks";
-import { Restaurant } from "@/app/models/restaurant.model";
-import { Reservation } from "@prisma/client";
-import React, { useState } from "react";
-import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import es from "date-fns/locale/es";
+import { Button, TextField } from "..";
+import { Restaurant } from "@/app/models/restaurant.model";
+import { useForm } from "@/app/hooks";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { Button } from "..";
+import { WEEK_DAYS } from "@/app/constants";
+import addDays from "date-fns/addDays";
+import DatePicker, { registerLocale } from "react-datepicker";
+import es from "date-fns/locale/es";
+import React, { useState } from "react";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
-import addDays from "date-fns/addDays";
-import { WEEK_DAYS } from "@/app/constants";
 registerLocale("es", es);
+
+interface ReservationFormProps {
+  id: string;
+  attentionScheduleId: string;
+  dinnerId?: string;
+  date: string;
+  people: number;
+  message?: string;
+  name?: string;
+  lastName?: string;
+  email?: string;
+}
 
 export default function Reservation({
   restaurant,
@@ -20,15 +31,13 @@ export default function Reservation({
   readonly restaurant: Restaurant;
 }) {
   const { user, isLoading } = useUser();
-  const { values, onChange } = useForm<Reservation>({
+  const { values, onChange } = useForm<ReservationFormProps>({
     id: "-1",
     attentionScheduleId: "",
-    dinnerId: null,
+    dinnerId: undefined,
     date: new Date().toISOString(),
-    people: "",
+    people: 2,
     message: "",
-    code: "",
-    statusId: 1,
   });
   const [dinnerDate, setDinnerDate] = useState<Date | null>(new Date());
   const closedDays = WEEK_DAYS.filter(
@@ -65,14 +74,15 @@ export default function Reservation({
         setHours(setMinutes(new Date(), +endRangeMinutes), +endRangeHours)
     );
   };
+
   if (isLoading) return <div>Cargando...</div>;
 
   return (
     <div className="px-10">
-      <h1 className="pb-3 text-4xl font-bold text-blue-chill-950">
+      <h1 className="pb-3 text-4xl font-bold text-lemon-950">
         Reservá en {restaurant.name}
       </h1>
-      <p className="text-blue-chill-900 pb-3 text-center">
+      <p className="text-black pb-3 text-center">
         {user
           ? `¡Hola ${user.name}! ¿Que día te esperamos?`
           : `!Hola! ¿Que día quieres reservar?`}
@@ -85,70 +95,64 @@ export default function Reservation({
           locale="es"
           dateFormat="MMMM d, yyyy HH:mm"
           placeholderText="Selecciona una fecha"
-          className="text-center border border-blue-chill-500 rounded-md p-1 capitalize"
+          className="w-full text-center border bg-lemon-100 border-lemon-300 text-black rounded-md p-1 capitalize"
           minDate={new Date()}
           maxDate={addDays(new Date(), 30)}
           calendarStartDay={1}
           filterDate={(date) => !hashClosedDays[date.getDay()]}
           filterTime={filterTimes}
           timeIntervals={15}
+          icon={<span>⌚</span>}
         />
-        <div className="flex flex-col gap-1">
-          <label htmlFor="people">Cantidad de personas</label>
-          <div>
-            <input
-              className="border text-center border-blue-chill-500 rounded-md max-w-[60px] p-1"
-              type="number"
-              name="people"
-              id="people"
-              value={values.people}
-              onChange={(e) => onChange({ people: e.target.value })}
-            />
-          </div>
+        <div>
+          <TextField
+            type="number"
+            label="Cantidad de personas"
+            placeholder="Cantidad de personas"
+            name="people"
+            value={String(values.people)}
+            onChange={(e) => onChange({ people: +e.target.value })}
+          />
         </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="first_name">Dejanos tu nombre</label>
-          <div>
-            <input
-              className="border text-center border-blue-chill-500 rounded-md p-1"
-              type="text"
-              name="first_name"
-              id="first_name"
-              value={values.people}
-              onChange={(e) => onChange({ people: e.target.value })}
-            />
-          </div>
+        <div>
+          <TextField
+            label="Nombre"
+            type="text"
+            name="first_name"
+            placeholder="Adrian"
+            value={values.name ?? ""}
+            onChange={(e) => onChange({ name: e.target.value })}
+          />
         </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="last_name">Dejanos tu apellido</label>
-          <div>
-            <input
-              className="border text-center border-blue-chill-500 rounded-md p-1"
-              type="text"
-              name="last_name"
-              id="last_name"
-              value={values.people}
-              onChange={(e) => onChange({ people: e.target.value })}
-            />
-          </div>
+        <div>
+          <TextField
+            type="text"
+            name="last_name"
+            label="Apellido"
+            placeholder="Perez"
+            value={values.lastName ?? ""}
+            onChange={(e) => onChange({ lastName: e.target.value })}
+          />
         </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="email">Email</label>
-          <div>
-            <input
-              className="border text-center border-blue-chill-500 rounded-md p-1"
-              type="email"
-              name="email"
-              id="email"
-              value={values.people}
-              onChange={(e) => onChange({ people: e.target.value })}
-            />
-          </div>
+        <div>
+          <TextField
+            type="email"
+            name="email"
+            label="Email"
+            placeholder="maria.perez@gmail.com"
+            value={values.email ?? ""}
+            onChange={(e) => onChange({ email: e.target.value })}
+          />
         </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="message">Algún comentario adicional?</label>
+        <div className="flex flex-col gap-2">
+          <label
+            htmlFor="message"
+            className="block my-2 text-sm font-medium text-gray-900"
+          >
+            Algún comentario adicional?
+          </label>
           <textarea
-            className="border border-blue-chill-500 rounded-md py-2 px-3 text-sm resize-none"
+            className="border bg-lemon-50 border-lemon-200  text-gray-900 rounded-md py-2 px-3 text-sm resize-none"
             name="message"
             id="message"
             placeholder="Ej: Quiero una mesa afuera"

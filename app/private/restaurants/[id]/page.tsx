@@ -1,8 +1,4 @@
-import {
-  CreateEditRestaurantForm,
-  RestaurantCard,
-  SectionTitle,
-} from "@/app/components";
+import { CreateEditRestaurantForm, SectionTitle } from "@/app/components";
 import { getRestaurantById } from "@/app/actions/restaurants";
 import React from "react";
 

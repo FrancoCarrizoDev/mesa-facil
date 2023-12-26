@@ -16,7 +16,7 @@ export async function encureExistsUser(oauthUser: Claims) {
         data: {
           email: oauthUser.email,
           first_name: oauthUser.given_name,
-          last_name: oauthUser.family_name,
+          last_name: oauthUser.family_name ?? "",
           id: oauthUser.sub,
         },
       });

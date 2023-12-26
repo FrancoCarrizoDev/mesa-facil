@@ -11,10 +11,8 @@ model User {
   id    String     @id @unique
   email String  @unique
   first_name String
-  last_name String
+  last_name String?
   restaurants Restaurant[]
-  role Role @relation(fields: [roleId], references: [id])
-  roleId Int
 }
 
 model Restaurant {
@@ -43,8 +41,8 @@ model AttentionSchedule {
 model Dinner {
   id         String     @id @unique
   first_name String
-  last_name String
-  phone String
+  last_name String?
+  phone String?
   email String?
   birthday String?
   reservation Reservation[]
@@ -71,8 +69,3 @@ model ReservationStatus {
   status String
 }
 
-model Role {
-  id      Int     @id @default(autoincrement())
-  name String
-  users User[]
-}

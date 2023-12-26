@@ -1,6 +1,7 @@
 "use server";
 import prisma from "@/lib/prisma";
 import { getSession } from "@auth0/nextjs-auth0";
+import { AttentionSchedule, Restaurant } from "@prisma/client";
 
 export const getRestaurantsByUserId = async (
   userId: string
@@ -60,6 +61,8 @@ export async function getRestaurantById({ id }: { id: string }) {
   }
 }
 
+export interface RestaurantDTO extends Restaurant, AttentionSchedule {}
+
 export async function getRestaurantBySlug({ slug }: { slug: string }) {
   try {
     const restaurant = await prisma.restaurant.findUnique({
@@ -71,16 +74,10 @@ export async function getRestaurantBySlug({ slug }: { slug: string }) {
       },
     });
 
-    if (restaurant === null) {
-      return new Response("Not found", { status: 404 });
-    }
-
-    return Response.json(restaurant);
-  } catch (error) {
+    return restaurant;
+  } catch (error: any) {
     console.log(error);
-    return Response.json({
-      error,
-    });
+    throw new Error(error.message);
   }
 }
 

@@ -1,4 +1,5 @@
 export * from "./Button";
+export * from "./CompleteProfile";
 export * from "./CreateEditRestaurantForm";
 export * from "./DinnerNavbar";
 export * from "./Navbar";
