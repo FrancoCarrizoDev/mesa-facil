@@ -38,7 +38,11 @@ export default function TextField({
         <input
           id={label}
           onChange={onChange}
-          className="bg-lemon-50 border border-lemon-200  text-gray-900 text-sm rounded-md block w-full p-2"
+          className={`${
+            disabled
+              ? "text-gray-500 disabled:cursor-not-allowed"
+              : "text-gray-900"
+          } border bg-lemon-50 border-lemon-200   text-sm rounded-md block w-full p-2 first-letter:`}
           placeholder={placeholder}
           type={type}
           value={value}

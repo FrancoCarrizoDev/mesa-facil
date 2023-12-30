@@ -1,4 +1,4 @@
-import { checkIncompleteProfile } from "@/app/actions/dinner";
+import { checkIncompleteProfile, getDinnerById } from "@/app/actions/dinner";
 import { getRestaurantBySlug } from "@/app/actions/restaurants";
 import { Reservation } from "@/app/components";
 import { getSession } from "@auth0/nextjs-auth0";
@@ -19,6 +19,7 @@ export default async function Page({
 
   const { user } = (await getSession()) ?? {};
 
+  let dinner = null;
   if (user) {
     const incompleteProfile = await checkIncompleteProfile(user);
     if (incompleteProfile) {
@@ -26,12 +27,13 @@ export default async function Page({
         `/dinner/complete-profile?redirectTo=/reserve/${params.slug}`
       );
     }
+    dinner = await getDinnerById(user.sub);
   }
 
   return (
     <div className="flex justify-center items-center pt-10">
       <Suspense>
-        <Reservation restaurant={restaurant} />
+        <Reservation restaurant={restaurant} dinner={dinner} />
       </Suspense>
     </div>
   );

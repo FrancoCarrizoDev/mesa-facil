@@ -68,9 +68,8 @@ export default function fButton({
         paddingClasses[size]
       } ${colorClasses[color]} ${sizeClasses[size]} ${
         variantClasses[variant]
-      } ${hoverClasses[color]}  ${
-        fullWidthClasses[fullWidth]
-      } transitions duration-300 ease-in-out`}
+      } ${hoverClasses[color]}  ${fullWidthClasses[fullWidth]} 
+      transitions duration-300 ease-in-out`}
       disabled={disabled}
     >
       {text}

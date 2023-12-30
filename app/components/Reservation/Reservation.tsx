@@ -3,7 +3,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Button, TextField } from "..";
 import { Restaurant } from "@/app/models/restaurant.model";
 import { useForm } from "@/app/hooks";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { WEEK_DAYS } from "@/app/constants";
 import addDays from "date-fns/addDays";
 import DatePicker, { registerLocale } from "react-datepicker";
@@ -12,6 +11,7 @@ import React, { useState } from "react";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import { Dinner } from "@prisma/client";
+import Link from "next/link";
 registerLocale("es", es);
 
 interface ReservationFormProps {
@@ -22,9 +22,21 @@ interface ReservationFormProps {
   people: number;
   message?: string;
   name?: string;
-  lastName?: string;
-  email?: string;
+  lastName?: string | null;
+  email?: string | null;
 }
+
+const getInitialValues = (dinner: Dinner | null) => ({
+  id: "-1",
+  attentionScheduleId: "",
+  dinnerId: dinner?.id,
+  date: null,
+  people: 0,
+  message: "",
+  name: dinner?.first_name,
+  lastName: dinner?.last_name,
+  email: dinner?.email,
+});
 
 export default function Reservation({
   restaurant,
@@ -33,14 +45,9 @@ export default function Reservation({
   readonly restaurant: Restaurant;
   readonly dinner: Dinner | null;
 }) {
-  const { values, onChange } = useForm<ReservationFormProps>({
-    id: "-1",
-    attentionScheduleId: "",
-    dinnerId: undefined,
-    date: null,
-    people: 2,
-    message: "",
-  });
+  const { values, onChange } = useForm<ReservationFormProps>(
+    getInitialValues(dinner)
+  );
   const [dinnerDate, setDinnerDate] = useState<Date | null>(null);
   const closedDays = WEEK_DAYS.filter(
     (day) =>
@@ -95,14 +102,14 @@ export default function Reservation({
           locale="es"
           dateFormat="MMMM d, yyyy HH:mm"
           placeholderText="Selecciona una fecha"
-          className="w-full text-center border bg-lemon-100 border-lemon-300 text-black rounded-md p-1 capitalize"
+          className="w-full text-center border bg-lemon-100 border-lemon-300 text-black rounded-md p-1 capitalize placeholder:text-lemon-900"
           minDate={new Date()}
           maxDate={addDays(new Date(), 30)}
           calendarStartDay={1}
           filterDate={(date) => !hashClosedDays[date.getDay()]}
           filterTime={filterTimes}
           timeIntervals={15}
-          icon={<span>⌚</span>}
+          icon={<span>holi</span>}
         />
         <div>
           <TextField
@@ -112,6 +119,7 @@ export default function Reservation({
             name="people"
             value={String(values.people)}
             onChange={(e) => onChange({ people: +e.target.value })}
+            emoji={values.people ? "✔️" : "👈"}
           />
         </div>
         <div>
@@ -122,6 +130,8 @@ export default function Reservation({
             placeholder="Adrian"
             value={values.name ?? ""}
             onChange={(e) => onChange({ name: e.target.value })}
+            disabled={!!dinner}
+            emoji={values.dinnerId ? "✔️" : undefined}
           />
         </div>
         <div>
@@ -132,6 +142,8 @@ export default function Reservation({
             placeholder="Perez"
             value={values.lastName ?? ""}
             onChange={(e) => onChange({ lastName: e.target.value })}
+            disabled={!!dinner}
+            emoji={values.dinnerId ? "✔️" : undefined}
           />
         </div>
         <div>
@@ -142,6 +154,8 @@ export default function Reservation({
             placeholder="maria.perez@gmail.com"
             value={values.email ?? ""}
             onChange={(e) => onChange({ email: e.target.value })}
+            disabled={!!dinner}
+            emoji={values.dinnerId ? "✔️" : undefined}
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -155,15 +169,22 @@ export default function Reservation({
             className="border bg-lemon-50 border-lemon-200  text-gray-900 rounded-md py-2 px-3 text-sm resize-none"
             name="message"
             id="message"
-            placeholder="Ej: Quiero una mesa afuera"
+            placeholder="Ej: En lo posible quiero una mesa al aire libre"
             value={values.message}
             onChange={(e) => onChange({ message: e.target.value })}
           />
         </div>
+        <p className="text-xs">
+          Al reservar estás aceptando nuestros{" "}
+          <Link className="text-[blue] underline" href={"/"}>
+            términos y condiciones
+          </Link>
+          .
+        </p>
         <Button
           variant="contained"
           color="primary"
-          text={dinner ? "Reservar" : "Reservar sin registrarme"}
+          text={dinner ? "Reservar 🤝" : "Reservar sin registrarme"}
         />
       </form>
     </div>

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { getSession } from "@auth0/nextjs-auth0";
 import { redirect } from "next/navigation";
-import { encureExistsUser } from "../actions/user";
-import { getRestaurantsByUser } from "../actions/restaurants";
 import { Restaurant } from "@prisma/client";
+import { encureExistsUser } from "@/app/actions/user";
+import { getRestaurantsByUser } from "@/app/actions/restaurants";
 
 export default async function Private() {
   const { user } = (await getSession()) ?? {};

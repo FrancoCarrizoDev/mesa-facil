@@ -31,16 +31,16 @@ export default function DinnerNavbar() {
                     className="text-xs"
                     href={`/api/auth/logout?redirectTo=${redirectTo}`}
                   >
-                    Logout
+                    Salir
                   </Link>
                 </li>
               ) : (
                 <li>
                   <Link
-                    className="text-xs"
+                    className="text-xs font-semibold"
                     href={`/api/auth/login?redirectTo=${redirectTo}`}
                   >
-                    Login
+                    Ingresar
                   </Link>
                 </li>
               )}
