@@ -18,6 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
+      <link rel="icon" href="/favicon.png" />
       <UserProvider>
         <body className={inter.className}>
           <ToastifyProvider>{children}</ToastifyProvider>

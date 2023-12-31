@@ -16,7 +16,7 @@ export default function DinnerNavbar() {
           <nav className="pe-3">
             <ul className="flex items-center text-blue-chill-900 text-xs gap-3">
               <li>
-                <Link href={"/reservs"}>Mis Reservas</Link>
+                <Link href={"/reservations"}>Mis Reservas</Link>
               </li>
               {user ? (
                 <li className="flex gap-3 items-center">
