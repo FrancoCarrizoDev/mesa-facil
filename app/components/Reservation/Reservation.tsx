@@ -12,9 +12,12 @@ import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import { Dinner } from "@prisma/client";
 import Link from "next/link";
+import { createReservation } from "@/app/actions/reservation";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 registerLocale("es", es);
 
-interface ReservationFormProps {
+export interface ReservationForm {
   id: string;
   attentionScheduleId: string;
   dinnerId?: string;
@@ -45,10 +48,11 @@ export default function Reservation({
   readonly restaurant: Restaurant;
   readonly dinner: Dinner | null;
 }) {
-  const { values, onChange } = useForm<ReservationFormProps>(
+  const { values, onChange } = useForm<ReservationForm>(
     getInitialValues(dinner)
   );
   const [dinnerDate, setDinnerDate] = useState<Date | null>(null);
+  const router = useRouter();
   const closedDays = WEEK_DAYS.filter(
     (day) =>
       !restaurant.attentionSchedule.some(
@@ -86,7 +90,13 @@ export default function Reservation({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log({ values, restaurant });
+    try {
+      await createReservation(values);
+      toast("Reserva creada con éxito");
+      router.push("/reservations");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

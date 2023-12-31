@@ -8,64 +8,66 @@ datasource db {
 }
 
 model User {
-  id    String     @id @unique
-  email String  @unique
-  first_name String
-  last_name String?
+  id          String       @id @unique
+  email       String       @unique
+  first_name  String
+  last_name   String?
   restaurants Restaurant[]
 }
 
 model Restaurant {
-  id    String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name String  
-  phone  String
-  address  String
+  id                String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String
+  phone             String
+  address           String
   attentionSchedule AttentionSchedule[]
-  user User @relation(fields: [userId], references: [id])
-  userId String
-  slug String? @unique
+  user              User                @relation(fields: [userId], references: [id])
+  userId            String
+  slug              String?             @unique
+
   @@index([slug], name: "slug")
 }
 
 model AttentionSchedule {
-  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  restaurant  Restaurant @relation(fields: [restaurantId], references: [id])
-  restaurantId String @db.Uuid
-  day String
-  dayNumber Int
-  start String
-  end String
+  id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  restaurant   Restaurant    @relation(fields: [restaurantId], references: [id])
+  restaurantId String        @db.Uuid
+  day          String
+  dayNumber    Int
+  start        String
+  end          String
   reservations Reservation[]
 }
 
 model Dinner {
-  id         String     @id @unique
-  first_name String
-  last_name String?
-  phone String?
-  email String?
-  birthday String?
+  id          String        @id @unique
+  first_name  String
+  last_name   String?
+  phone       String?
+  email       String?
+  birthday    String?
   reservation Reservation[]
 }
 
 model Reservation {
-  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  attentionSchedule  AttentionSchedule @relation(fields: [attentionScheduleId], references: [id])
-  attentionScheduleId String @db.Uuid
-  dinner  Dinner? @relation(fields: [dinnerId], references: [id])
-  dinnerId String?
-  date String
-  people String
-  message String
-  code String
-  status ReservationStatus @relation(fields: [statusId], references: [id])
-  statusId Int 
+  id                  String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  attentionSchedule   AttentionSchedule @relation(fields: [attentionScheduleId], references: [id])
+  attentionScheduleId String            @db.Uuid
+  dinner              Dinner?           @relation(fields: [dinnerId], references: [id])
+  dinnerId            String?
+  date                String
+  people              String
+  message             String
+  code                String
+  status              ReservationStatus @relation(fields: [statusId], references: [id])
+  statusId            Int
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
 }
 
 model ReservationStatus {
   // auto incrementalid
-  id      Int     @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   reservation Reservation[]
-  status String
+  status      String
 }
-
