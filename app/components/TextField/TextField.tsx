@@ -39,10 +39,8 @@ export default function TextField({
           id={label}
           onChange={onChange}
           className={`${
-            disabled
-              ? "text-gray-500 disabled:cursor-not-allowed"
-              : "text-gray-900"
-          } border bg-lemon-50 border-lemon-200   text-sm rounded-md block w-full p-2 first-letter:`}
+            disabled ? "disabled:cursor-not-allowed" : ""
+          } border bg-lemon-50 border-lemon-200 text-gray-500  text-sm rounded-md block w-full p-2 first-letter:`}
           placeholder={placeholder}
           type={type}
           value={value}

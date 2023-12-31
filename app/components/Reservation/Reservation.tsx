@@ -84,33 +84,52 @@ export default function Reservation({
     );
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log({ values, restaurant });
+  };
+
   return (
     <div className="px-10">
-      <h1 className="pb-3 text-4xl font-bold text-lemon-950">
-        Reservá en {restaurant.name}
+      <h1 className="pb-3 text-4xl font-bold">
+        Reservá en <span className="text-orange-900">{restaurant.name}</span>
       </h1>
       <p className="text-black pb-3 text-center">
         {dinner
           ? `¡Hola ${dinner.first_name}! ¿Que día te esperamos?`
           : `!Hola! ¿Que día quieres reservar?`}
       </p>
-      <form className="flex flex-col justify-between gap-3">
-        <DatePicker
-          selected={dinnerDate}
-          onChange={(date) => setDinnerDate(date)}
-          showTimeSelect
-          locale="es"
-          dateFormat="MMMM d, yyyy HH:mm"
-          placeholderText="Selecciona una fecha"
-          className="w-full text-center border bg-lemon-100 border-lemon-300 text-black rounded-md p-1 capitalize placeholder:text-lemon-900"
-          minDate={new Date()}
-          maxDate={addDays(new Date(), 30)}
-          calendarStartDay={1}
-          filterDate={(date) => !hashClosedDays[date.getDay()]}
-          filterTime={filterTimes}
-          timeIntervals={15}
-          icon={<span>holi</span>}
-        />
+      <form
+        className="flex flex-col justify-between gap-3"
+        onSubmit={handleSubmit}
+      >
+        <div className="flex justify-between">
+          <DatePicker
+            selected={dinnerDate}
+            onChange={(date) => {
+              setDinnerDate(date);
+              onChange({
+                date: date?.toISOString() ?? null,
+                attentionScheduleId: restaurant.attentionSchedule.find(
+                  (schedule) => schedule.dayNumber === date?.getDay()
+                )?.id as string,
+              });
+            }}
+            showTimeSelect
+            locale="es"
+            dateFormat="MMMM d, yyyy HH:mm"
+            wrapperClassName="w-full"
+            placeholderText="Fecha"
+            className="w-full fullborder border bg-lemon-50 border-lemon-200 text-gray-500 rounded-md  capitalize placeholder:text-gray-500 placeholder:text-sm py-1 px-2"
+            minDate={new Date()}
+            maxDate={addDays(new Date(), 30)}
+            calendarStartDay={1}
+            filterDate={(date) => !hashClosedDays[date.getDay()]}
+            filterTime={filterTimes}
+            timeIntervals={15}
+          />
+          <span className="ps-2">{dinnerDate ? "✔️" : "👈"}</span>
+        </div>
         <div>
           <TextField
             type="number"
@@ -161,18 +180,21 @@ export default function Reservation({
         <div className="flex flex-col gap-2">
           <label
             htmlFor="message"
-            className="block my-2 text-sm font-medium text-gray-900"
+            className="block my-2 text-sm font-medium text-gray-500"
           >
             Algún comentario adicional?
           </label>
-          <textarea
-            className="border bg-lemon-50 border-lemon-200  text-gray-900 rounded-md py-2 px-3 text-sm resize-none"
-            name="message"
-            id="message"
-            placeholder="Ej: En lo posible quiero una mesa al aire libre"
-            value={values.message}
-            onChange={(e) => onChange({ message: e.target.value })}
-          />
+          <div className="flex items-center">
+            <textarea
+              className="w-full border bg-lemon-50 border-lemon-200  text-gray-500 rounded-md py-2 px-3 text-xs resize-none"
+              name="message"
+              id="message"
+              placeholder="Ej: En lo posible quiero una mesa al aire libre"
+              value={values.message}
+              onChange={(e) => onChange({ message: e.target.value })}
+            />
+            <span className="ps-2">{values.message ? "✔️" : "👈"}</span>
+          </div>
         </div>
         <p className="text-xs">
           Al reservar estás aceptando nuestros{" "}
@@ -184,6 +206,7 @@ export default function Reservation({
         <Button
           variant="contained"
           color="primary"
+          type="submit"
           text={dinner ? "Reservar 🤝" : "Reservar sin registrarme"}
         />
       </form>
