@@ -19,7 +19,7 @@ export default async function Page() {
   const reservations: DinnerReservation[] = await getReservations();
 
   return (
-    <div>
+    <div className="p-5">
       <ReservationListContainer reservationList={reservations} />
     </div>
   );

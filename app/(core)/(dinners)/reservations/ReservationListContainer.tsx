@@ -8,11 +8,18 @@ export default function ReservationListContainer({
 }: {
   reservationList: DinnerReservation[];
 }) {
+  console.log({ reservationList: JSON.stringify(reservationList) });
   return (
-    <ul className="w-full divide-y divide-gray-200">
-      {reservationList.map((reservation) => (
-        <ReservationItem key={reservation.id} reservation={reservation} />
-      ))}
-    </ul>
+    <div>
+      <div className="flex flex-col">
+        <h4 className="text-2xl font-semibold">Mis Reservas</h4>
+        <hr />
+      </div>
+      <ul className="pt-3 w-full divide-y divide-gray-200">
+        {reservationList.map((reservation) => (
+          <ReservationItem key={reservation.id} reservation={reservation} />
+        ))}
+      </ul>
+    </div>
   );
 }
