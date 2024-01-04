@@ -8,14 +8,31 @@ import { getSession } from "@auth0/nextjs-auth0";
 export async function createReservation(form: ReservationForm) {
   try {
     if (!form.dinnerId) {
-      const newDinner = await prisma.dinner.create({
-        data: {
+      // If the user is not logged in
+      if (!form.email) {
+        throw new Error("Email is required");
+      }
+
+      console.log("eject");
+      const dinnerByEmail = await prisma.dinner.findUnique({
+        where: {
           email: form.email,
-          first_name: form.name!,
-          last_name: form.lastName,
-          id: uuid(),
         },
       });
+
+      let newDinner;
+      if (!dinnerByEmail) {
+        newDinner = await prisma.dinner.create({
+          data: {
+            email: form.email,
+            first_name: form.name!,
+            last_name: form.lastName,
+            id: uuid(),
+          },
+        });
+      } else {
+        newDinner = dinnerByEmail;
+      }
 
       form.dinnerId = newDinner.id;
     }

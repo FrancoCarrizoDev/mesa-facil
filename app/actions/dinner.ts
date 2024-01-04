@@ -3,21 +3,29 @@
 import prisma from "@/lib/prisma";
 import { Claims } from "@auth0/nextjs-auth0";
 import { Dinner } from "@prisma/client";
+import { uuid } from "uuidv4";
 
 export async function checkIncompleteProfile(
   oauthUser: Claims
 ): Promise<boolean> {
   try {
-    const dinner = await prisma.dinner.findUnique({
+    const dinner = await prisma.dinner.findFirst({
       where: {
-        id: oauthUser.sub,
+        OR: [
+          {
+            id: oauthUser.sub,
+          },
+          {
+            email: oauthUser.email,
+          },
+        ],
       },
     });
 
     if (!dinner) {
       await prisma.dinner.create({
         data: {
-          id: oauthUser.sub,
+          id: uuid(),
           first_name: oauthUser.given_name || oauthUser.nickname,
           email: oauthUser.email,
         },
@@ -25,8 +33,24 @@ export async function checkIncompleteProfile(
       return true;
     }
 
-    if (!dinner.first_name || !dinner.last_name || !dinner.email) {
+    if (
+      !dinner.first_name ||
+      !dinner.last_name ||
+      !dinner.email ||
+      !dinner.birthday
+    ) {
       return true;
+    }
+
+    if (!dinner.sub) {
+      await prisma.dinner.update({
+        where: {
+          id: dinner.id,
+        },
+        data: {
+          sub: oauthUser.sub,
+        },
+      });
     }
 
     return false;
@@ -36,11 +60,21 @@ export async function checkIncompleteProfile(
   }
 }
 
-export async function getDinnerById(id: string): Promise<Dinner | null> {
+export async function getDinnerBySubIdOrEmail(
+  id: string,
+  email: string
+): Promise<Dinner | null> {
   try {
-    const dinner = await prisma.dinner.findUnique({
+    const dinner = await prisma.dinner.findFirst({
       where: {
-        id,
+        OR: [
+          {
+            id,
+          },
+          {
+            email,
+          },
+        ],
       },
     });
 

@@ -1,4 +1,7 @@
-import { checkIncompleteProfile, getDinnerById } from "@/app/actions/dinner";
+import {
+  checkIncompleteProfile,
+  getDinnerBySubIdOrEmail,
+} from "@/app/actions/dinner";
 import { getRestaurantBySlug } from "@/app/actions/restaurants";
 import { Reservation } from "@/app/components";
 import { getSession } from "@auth0/nextjs-auth0";
@@ -27,7 +30,7 @@ export default async function Page({
         `/dinner/complete-profile?redirectTo=/reserve/${params.slug}`
       );
     }
-    dinner = await getDinnerById(user.sub);
+    dinner = await getDinnerBySubIdOrEmail(user.sub, user.email);
   }
 
   return (

@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { Claims } from "@auth0/nextjs-auth0";
+import { uuid } from "uuidv4";
 
 export async function encureExistsUser(oauthUser: Claims) {
   try {
@@ -17,7 +18,8 @@ export async function encureExistsUser(oauthUser: Claims) {
           email: oauthUser.email,
           first_name: oauthUser.given_name,
           last_name: oauthUser.family_name ?? "",
-          id: oauthUser.sub,
+          id: uuid(),
+          sub: oauthUser.sub,
         },
       });
     }

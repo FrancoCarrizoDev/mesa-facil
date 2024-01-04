@@ -27,6 +27,7 @@ export interface ReservationForm {
   name?: string;
   lastName?: string | null;
   email?: string | null;
+  phone?: string | null;
 }
 
 const getInitialValues = (dinner: Dinner | null) => ({
@@ -39,6 +40,7 @@ const getInitialValues = (dinner: Dinner | null) => ({
   name: dinner?.first_name,
   lastName: dinner?.last_name,
   email: dinner?.email,
+  phone: dinner?.phone,
 });
 
 export default function Reservation({
@@ -92,8 +94,10 @@ export default function Reservation({
     e.preventDefault();
     try {
       await createReservation(values);
-      toast("Reserva creada con éxito");
-      router.push("/reservations");
+      toast("Reserva creada con éxito, te esperamos!");
+      if (dinner) {
+        router.push("/reservations");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -160,7 +164,7 @@ export default function Reservation({
             value={values.name ?? ""}
             onChange={(e) => onChange({ name: e.target.value })}
             disabled={!!dinner}
-            emoji={values.dinnerId ? "✔️" : undefined}
+            emoji={values.dinnerId || values.name ? "✔️" : "👈"}
           />
         </div>
         <div>
@@ -172,7 +176,19 @@ export default function Reservation({
             value={values.lastName ?? ""}
             onChange={(e) => onChange({ lastName: e.target.value })}
             disabled={!!dinner}
-            emoji={values.dinnerId ? "✔️" : undefined}
+            emoji={values.dinnerId || values.lastName ? "✔️" : "👈"}
+          />
+        </div>
+        <div>
+          <TextField
+            type="number"
+            name="phone"
+            label="Teléfono"
+            placeholder="351-111-1212"
+            value={values.phone ?? ""}
+            onChange={(e) => onChange({ phone: e.target.value })}
+            disabled={!!dinner}
+            emoji={values.dinnerId || values.phone ? "✔️" : "👈"}
           />
         </div>
         <div>
@@ -184,7 +200,7 @@ export default function Reservation({
             value={values.email ?? ""}
             onChange={(e) => onChange({ email: e.target.value })}
             disabled={!!dinner}
-            emoji={values.dinnerId ? "✔️" : undefined}
+            emoji={values.dinnerId || values.email ? "✔️" : "👈"}
           />
         </div>
         <div className="flex flex-col gap-2">

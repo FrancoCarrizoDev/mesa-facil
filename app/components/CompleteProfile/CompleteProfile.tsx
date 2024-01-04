@@ -45,7 +45,7 @@ export default function CompleteProfile({
 
       if (updatedUser) {
         toast.success("Perfil actualizado correctamente");
-        router.push(`/reserve/${searchParams.get("redirectTo")}`);
+        router.replace(`/reserve/${searchParams.get("redirectTo")}`);
       }
     } catch (error) {
       toast.error("Error al actualizar el perfil");
@@ -92,7 +92,7 @@ export default function CompleteProfile({
           }}
           value={values.last_name}
           name="family_name"
-          emoji="👈"
+          emoji={values.last_name !== "" ? "✔️" : "👈"}
         />
         <TextField
           label="Teléfono"
@@ -102,7 +102,7 @@ export default function CompleteProfile({
           }}
           value={values.phone}
           name="phone"
-          emoji="👈"
+          emoji={values.phone !== "" ? "✔️" : "👈"}
         />
         <div className="flex flex-col">
           <label
@@ -126,7 +126,7 @@ export default function CompleteProfile({
               showYearDropdown
               dropdownMode="select"
             />
-            <span>👈</span>
+            <span>{values.birthday ? "✔️" : "👈"}</span>
           </div>
           <div className="mt-5 w-full">
             <Button
