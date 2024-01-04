@@ -15,7 +15,7 @@ export default function ReservationListContainer({
         <h4 className="text-2xl font-semibold">Mis Reservas</h4>
         <hr />
       </div>
-      <ul className="pt-3 w-full divide-y divide-gray-200">
+      <ul className="pt-3 overflow-x-auto divide-y divide-gray-200">
         {reservationList.map((reservation) => (
           <ReservationItem key={reservation.id} reservation={reservation} />
         ))}

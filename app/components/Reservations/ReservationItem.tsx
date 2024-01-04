@@ -9,18 +9,15 @@ export default function ReservationItem({
   reservation: DinnerReservation;
 }) {
   return (
-    <li className="pb-3 sm:pb-4">
+    <li className="py-2 sm:py-4">
       <div className="flex items-center space-x-4 rtl:space-x-reverse">
         <div className="flex-shrink-0">
-          <p className="text-sm font-medium text-gray-900 truncate ">
+          <p className="text-sm font-medium text-gray-900 ">
             {reservation.attentionSchedule.restaurant.name}
-          </p>
-          <p className="text-sm font-medium text-gray-900 truncate ">
-            {reservation.attentionSchedule.restaurant.address}
           </p>
         </div>
         <div className="flex-shrink-0 min-w-0">
-          <p className="text-sm font-medium text-gray-900 truncate ">
+          <p className="text-sm font-medium text-gray-900 ">
             {new Date(reservation.date).toLocaleDateString("es-AR", {
               weekday: "long",
               year: "numeric",
@@ -33,15 +30,14 @@ export default function ReservationItem({
             })}
             hs
           </p>
+        </div>
+        <div className="flex-shrink-0">
           <p className="text-sm text-gray-500 truncate ">
             {reservation.people} personas
           </p>
         </div>
-        <div className="flex-shrink-0">
-          <p className="text-sm text-gray-500">{reservation.message}</p>
-        </div>
         <div className="inline-flex items-center font-semibold text-gray-900 ">
-          {getReservationLabel(reservation.status.status)}d
+          {getReservationLabel(reservation.status.status)}
         </div>
         <div className="flex-shrink-0">
           <p>Ver QR</p>
