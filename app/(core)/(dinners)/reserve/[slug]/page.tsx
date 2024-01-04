@@ -6,7 +6,6 @@ import { getRestaurantBySlug } from "@/app/actions/restaurants";
 import { Reservation } from "@/app/components";
 import { getSession } from "@auth0/nextjs-auth0";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
 import NotFound from "./not-found";
 
 export default async function Page({
@@ -35,9 +34,7 @@ export default async function Page({
 
   return (
     <div className="flex justify-center items-center pt-10">
-      <Suspense>
-        <Reservation restaurant={restaurant} dinner={dinner} />
-      </Suspense>
+      <Reservation restaurant={restaurant} dinner={dinner} />
     </div>
   );
 }
