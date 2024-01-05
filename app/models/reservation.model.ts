@@ -11,8 +11,8 @@ export interface ReservationByIdDTO {
 }
 
 export enum ReservationStatus {
-  PENDING = 1,
-  CONFIRMED = 2,
-  COMPLETED = 3,
-  CANCELED = 4,
+  CREATED = 1,
+  ACEPTED = 2,
+  REJECTED = 3,
+  REPROGRAMED = 4,
 }

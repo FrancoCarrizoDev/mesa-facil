@@ -1,4 +1,4 @@
-import { ReservationItemDTO } from "@/app/models/reservation.model";
+import { ReservationItemDTO } from "@/app/models/reservation-item.model";
 import { ReservationItem } from ".";
 
 export default function ReservationListContainer({

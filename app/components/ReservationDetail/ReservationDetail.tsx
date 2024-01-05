@@ -2,13 +2,26 @@
 
 import QRCode from "react-qr-code";
 import { Button } from "..";
-import { ReservationByID } from "@/app/models/reservation";
+import { ReservationByIdDTO } from "@/app/models/reservation.model";
+import { cancelReservation } from "@/app/actions/reservation";
+import { toast } from "react-toastify";
 
 export default function ReservationDetail({
   reservation,
 }: {
-  readonly reservation: ReservationByID;
+  readonly reservation: ReservationByIdDTO;
 }) {
+  const onCancelReservation = async () => {
+    const actionResponse = await cancelReservation(reservation.id);
+    if (actionResponse) {
+      toast("Reserva cancelada");
+    } else {
+      toast("No se pudo cancelar la reserva", {
+        type: "error",
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center p-8">
       <QRCode value={reservation.id} size={256} />
@@ -35,7 +48,11 @@ export default function ReservationDetail({
         {reservation.attentionSchedule.restaurant.address}
       </p>
       <div className="pt-5">
-        <Button text="Cancelar reserva" color="error" />
+        <Button
+          text="Cancelar reserva"
+          color="error"
+          onClick={onCancelReservation}
+        />
       </div>
       <p className="mt-4 text-sm text-center text-gray-600">
         Muéstrale este código al personal del restaurante para que puedan

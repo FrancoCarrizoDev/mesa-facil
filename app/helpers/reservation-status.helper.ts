@@ -1,14 +1,14 @@
-import { ReservationStatus } from "../models/reservation-item.model";
+import { ReservationStatus } from "../models/reservation.model";
 
-export const getReservationLabel = (statusLabel: string): string => {
+export const getReservationLabel = (statusLabel: number): string => {
   switch (statusLabel) {
-    case ReservationStatus.CREATED.toString():
+    case ReservationStatus.CREATED:
       return "Creada";
-    case ReservationStatus.CONFIRMED.toString():
+    case ReservationStatus.ACEPTED:
       return "Confirmada";
-    case ReservationStatus.REJECTED.toString():
+    case ReservationStatus.REJECTED:
       return "Rechazada";
-    case ReservationStatus.REPROGRAMMED.toString():
+    case ReservationStatus.REPROGRAMED:
       return "Reprogramada";
     default:
       return "Creada";

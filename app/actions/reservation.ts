@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import { ReservationForm } from "../components/Reservation/Reservation";
 import { uuid } from "uuidv4";
 import { getSession } from "@auth0/nextjs-auth0";
+import { ReservationStatus } from "../models/reservation.model";
 
 export async function createReservation(form: ReservationForm) {
   try {
@@ -84,7 +85,7 @@ export const getReservations = async () => {
       },
       status: {
         select: {
-          status: true,
+          id: true,
         },
       },
     },
@@ -116,4 +117,22 @@ export const getReservationById = async (id: string) => {
   });
 
   return reservation;
+};
+
+export const cancelReservation = async (id: string) => {
+  try {
+    const reservation = await prisma.reservation.update({
+      where: {
+        id,
+      },
+      data: {
+        statusId: ReservationStatus.REPROGRAMED,
+      },
+    });
+
+    return reservation;
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(error.message);
+  }
 };

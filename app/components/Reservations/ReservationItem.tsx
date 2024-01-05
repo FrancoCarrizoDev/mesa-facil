@@ -1,12 +1,12 @@
 import { getReservationLabel } from "@/app/helpers/reservation-status.helper";
-import { ReservationItemDTO } from "@/app/models/reservation.model";
+import { ReservationItemDTO } from "@/app/models/reservation-item.model";
 import Link from "next/link";
 import React from "react";
 
 export default function ReservationItem({
   reservation,
 }: {
-  reservation: ReservationItemDTO;
+  readonly reservation: ReservationItemDTO;
 }) {
   return (
     <li className="py-2 sm:py-4">
@@ -37,7 +37,7 @@ export default function ReservationItem({
           </p>
         </div>
         <div className="inline-flex items-center font-semibold text-gray-900 ">
-          {getReservationLabel(reservation.status.status)}
+          {getReservationLabel(reservation.status.id)}
         </div>
         <div className="flex-shrink-0">
           <Link href={`/reservations/${reservation.id}`}>Ver QR</Link>
