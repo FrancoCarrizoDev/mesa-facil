@@ -1,14 +1,11 @@
-import ReservationItem from "@/app/components/Reservations/ReservationItem";
 import { DinnerReservation } from "@/app/models/reservation.model";
-import React from "react";
-import QRCode from "react-qr-code";
+import { ReservationItem } from ".";
 
 export default function ReservationListContainer({
   reservationList,
 }: {
-  reservationList: DinnerReservation[];
+  readonly reservationList: DinnerReservation[];
 }) {
-  console.log({ reservationList: JSON.stringify(reservationList) });
   return (
     <div>
       <div className="flex flex-col">

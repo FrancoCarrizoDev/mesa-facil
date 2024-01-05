@@ -1,7 +1,7 @@
 import { getReservationLabel } from "@/app/helpers/reservation-status.helper";
 import { DinnerReservation } from "@/app/models/reservation.model";
+import Link from "next/link";
 import React from "react";
-import QRCode from "react-qr-code";
 
 export default function ReservationItem({
   reservation,
@@ -40,7 +40,7 @@ export default function ReservationItem({
           {getReservationLabel(reservation.status.status)}
         </div>
         <div className="flex-shrink-0">
-          <p>Ver QR</p>
+          <Link href={`/reservations/${reservation.id}`}>Ver QR</Link>
         </div>
       </div>
     </li>

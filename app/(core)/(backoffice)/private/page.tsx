@@ -13,7 +13,6 @@ export default async function Private() {
   }
   await encureExistsUser(user);
   const restaurants = (await getRestaurantsByUser()) as Restaurant[];
-  console.log(restaurants);
   return (
     <section className="w-full border rounded-md p-5 bg-blue-chill-100 border-blue-chill-400">
       <h1 className="text-4xl font-bold text-blue-chill-950">Bienvenido!</h1>

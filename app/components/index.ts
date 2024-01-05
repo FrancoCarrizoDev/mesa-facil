@@ -5,6 +5,8 @@ export * from "./DinnerNavbar";
 export * from "./Navbar";
 export * from "./PricingSection";
 export * from "./Reservation";
+export * from "./ReservationDetail";
+export * from "./Reservations";
 export * from "./RestaurantCard";
 export * from "./SectionTitle";
 export * from "./Select";

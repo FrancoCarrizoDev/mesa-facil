@@ -43,3 +43,8 @@ next-env.d.ts
 *tmp*
 
 /prisma/migrations/*
+
+id_personal
+id_personal.pub
+.env
+docker-compose.yaml

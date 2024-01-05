@@ -82,3 +82,22 @@ export const getReservations = async () => {
 
   return reservations;
 };
+
+export const getReservationById = async (id: string) => {
+  const reservation = await prisma.reservation.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      dinner: true,
+      attentionSchedule: {
+        include: {
+          restaurant: true,
+        },
+      },
+      status: true,
+    },
+  });
+
+  return reservation;
+};

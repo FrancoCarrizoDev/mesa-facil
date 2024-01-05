@@ -55,8 +55,8 @@ model Reservation {
   id                  String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   attentionSchedule   AttentionSchedule @relation(fields: [attentionScheduleId], references: [id])
   attentionScheduleId String            @db.Uuid
-  dinner              Dinner?           @relation(fields: [dinnerId], references: [id])
-  dinnerId            String?
+  dinner              Dinner            @relation(fields: [dinnerId], references: [id])
+  dinnerId            String
   date                String
   people              String
   message             String

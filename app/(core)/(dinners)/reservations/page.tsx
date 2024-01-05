@@ -1,8 +1,7 @@
 import { getReservations } from "@/app/actions/reservation";
+import { ReservationListContainer } from "@/app/components";
 import { DinnerReservation } from "@/app/models/reservation.model";
 import { getSession } from "@auth0/nextjs-auth0";
-import React from "react";
-import ReservationListContainer from "./ReservationListContainer";
 
 export default async function Page() {
   const { user } = (await getSession()) ?? {};
