@@ -1,10 +1,10 @@
-import { DinnerReservation } from "@/app/models/reservation.model";
+import { ReservationItemDTO } from "@/app/models/reservation.model";
 import { ReservationItem } from ".";
 
 export default function ReservationListContainer({
   reservationList,
 }: {
-  readonly reservationList: DinnerReservation[];
+  readonly reservationList: ReservationItemDTO[];
 }) {
   return (
     <div>

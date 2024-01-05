@@ -69,14 +69,24 @@ export const getReservations = async () => {
         email: user.email,
       },
     },
-    include: {
-      dinner: true,
+    select: {
+      id: true,
+      people: true,
+      date: true,
       attentionSchedule: {
-        include: {
-          restaurant: true,
+        select: {
+          restaurant: {
+            select: {
+              name: true,
+            },
+          },
         },
       },
-      status: true,
+      status: {
+        select: {
+          status: true,
+        },
+      },
     },
   });
 
@@ -88,14 +98,20 @@ export const getReservationById = async (id: string) => {
     where: {
       id,
     },
-    include: {
-      dinner: true,
+    select: {
+      id: true,
+      people: true,
+      date: true,
       attentionSchedule: {
-        include: {
-          restaurant: true,
+        select: {
+          restaurant: {
+            select: {
+              name: true,
+              address: true,
+            },
+          },
         },
       },
-      status: true,
     },
   });
 

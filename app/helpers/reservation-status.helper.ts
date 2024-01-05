@@ -1,4 +1,4 @@
-import { ReservationStatus } from "../models/reservation.model";
+import { ReservationStatus } from "../models/reservation-item.model";
 
 export const getReservationLabel = (statusLabel: string): string => {
   switch (statusLabel) {

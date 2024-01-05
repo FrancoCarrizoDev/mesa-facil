@@ -1,12 +1,12 @@
 import { getReservationLabel } from "@/app/helpers/reservation-status.helper";
-import { DinnerReservation } from "@/app/models/reservation.model";
+import { ReservationItemDTO } from "@/app/models/reservation.model";
 import Link from "next/link";
 import React from "react";
 
 export default function ReservationItem({
   reservation,
 }: {
-  reservation: DinnerReservation;
+  reservation: ReservationItemDTO;
 }) {
   return (
     <li className="py-2 sm:py-4">
