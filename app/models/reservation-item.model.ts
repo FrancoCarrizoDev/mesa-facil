@@ -6,14 +6,14 @@ export interface ReservationItemDTO {
   status: Status;
 }
 
-export interface AttentionSchedule {
+interface AttentionSchedule {
   restaurant: Restaurant;
 }
 
-export interface Restaurant {
+interface Restaurant {
   name: string;
 }
 
-export interface Status {
+interface Status {
   id: number;
 }

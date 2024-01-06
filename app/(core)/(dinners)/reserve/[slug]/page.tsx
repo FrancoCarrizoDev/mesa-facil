@@ -3,7 +3,7 @@ import {
   getDinnerBySubIdOrEmail,
 } from "@/app/actions/dinner";
 import { getRestaurantBySlug } from "@/app/actions/restaurants";
-import { Reservation } from "@/app/components";
+import { DinnerReservationForm } from "@/app/components";
 import { getSession } from "@auth0/nextjs-auth0";
 import { redirect } from "next/navigation";
 import NotFound from "./not-found";
@@ -34,7 +34,7 @@ export default async function Page({
 
   return (
     <div className="flex justify-center items-center pt-10">
-      <Reservation restaurant={restaurant} dinner={dinner} />
+      <DinnerReservationForm restaurant={restaurant} dinner={dinner} />
     </div>
   );
 }

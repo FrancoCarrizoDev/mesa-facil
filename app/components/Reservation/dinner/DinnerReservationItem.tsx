@@ -3,7 +3,7 @@ import { ReservationItemDTO } from "@/app/models/reservation-item.model";
 import Link from "next/link";
 import React from "react";
 
-export default function ReservationItem({
+export default function DinnerReservationItem({
   reservation,
 }: {
   readonly reservation: ReservationItemDTO;

@@ -1,5 +1,5 @@
 import { getReservations } from "@/app/actions/reservation";
-import { ReservationListContainer } from "@/app/components";
+import { DinnerReservationListContainer } from "@/app/components";
 import { ReservationItemDTO } from "@/app/models/reservation-item.model";
 import { getSession } from "@auth0/nextjs-auth0";
 
@@ -17,11 +17,11 @@ export default async function Page() {
 
   const reservations: ReservationItemDTO[] = await getReservations();
 
-  console.log({ reservations: JSON.stringify(reservations) });
+
 
   return (
     <div className="p-5">
-      <ReservationListContainer reservationList={reservations} />
+      <DinnerReservationListContainer reservationList={reservations} />
     </div>
   );
 }

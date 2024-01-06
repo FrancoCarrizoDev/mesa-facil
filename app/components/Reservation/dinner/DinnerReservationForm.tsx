@@ -1,40 +1,23 @@
 "use client";
 import "react-datepicker/dist/react-datepicker.css";
-import { Button, TextField } from "..";
+import { createReservation } from "@/app/actions/reservation";
+import { CreateReservationDTO, ReservationForm } from "@/app/models/reservation.model";
+import { Dinner } from "@prisma/client";
 import { Restaurant } from "@/app/models/restaurant.model";
-import { useForm } from "@/app/hooks";
-import { WEEK_DAYS } from "@/app/constants";
-import addDays from "date-fns/addDays";
+import { TextField , Button  } from '@/app/components'
+import { toast } from "react-toastify";
+import { useDinnerReservation, useForm } from "@/app/hooks";
+import { useRouter } from "next/navigation";
 import DatePicker, { registerLocale } from "react-datepicker";
 import es from "date-fns/locale/es";
-import React, { useState } from "react";
-import setHours from "date-fns/setHours";
-import setMinutes from "date-fns/setMinutes";
-import { Dinner } from "@prisma/client";
 import Link from "next/link";
-import { createReservation } from "@/app/actions/reservation";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 registerLocale("es", es);
-
-export interface ReservationForm {
-  id: string;
-  attentionScheduleId: string;
-  dinnerId?: string;
-  date: string | null;
-  people: number;
-  message?: string;
-  name?: string;
-  lastName?: string | null;
-  email?: string | null;
-  phone?: string | null;
-}
 
 const getInitialValues = (dinner: Dinner | null) => ({
   id: "-1",
   attentionScheduleId: "",
   dinnerId: dinner?.id,
-  date: null,
+  date: new Date(),
   people: 0,
   message: "",
   name: dinner?.first_name,
@@ -43,59 +26,41 @@ const getInitialValues = (dinner: Dinner | null) => ({
   phone: dinner?.phone,
 });
 
-export default function Reservation({
-  restaurant,
-  dinner,
+export default function DinnerReservationForm({
+  restaurant: restaurantData,
+  dinner : dinnerData,
 }: {
   readonly restaurant: Restaurant;
   readonly dinner: Dinner | null;
 }) {
-  const { values, onChange } = useForm<ReservationForm>(
-    getInitialValues(dinner)
-  );
-  const [dinnerDate, setDinnerDate] = useState<Date | null>(null);
   const router = useRouter();
-  const closedDays = WEEK_DAYS.filter(
-    (day) =>
-      !restaurant.attentionSchedule.some(
-        (schedule) => schedule.dayNumber === day.id
-      )
+  const { values, onChange } = useForm<ReservationForm>(
+    getInitialValues(dinnerData)
   );
-  const hashClosedDays = closedDays.reduce((acc, day) => {
-    acc[day.id] = true;
-    return acc;
-  }, {} as Record<number, boolean>);
 
-  const filterTimes = (time: Date) => {
-    const day = time.getDay();
-    const foundByDayId = restaurant.attentionSchedule.find(
-      (schedule) => schedule.dayNumber === day
-    );
-
-    if (!foundByDayId) return false;
-
-    const [startRangeHours, startRangeMinutes] = foundByDayId.start.split(":");
-    const [endRangeHours, endRangeMinutes] = foundByDayId.end.split(":");
-
-    const hours = time.getHours();
-    const minutes = time.getMinutes();
-    return (
-      setHours(setMinutes(new Date(), minutes), hours) >=
-        setHours(
-          setMinutes(new Date(), +startRangeMinutes),
-          +startRangeHours
-        ) &&
-      setHours(setMinutes(new Date(), minutes), hours) <=
-        setHours(setMinutes(new Date(), +endRangeMinutes), +endRangeHours)
-    );
-  };
+  const {  filterTimes, hashClosedDays,  restaurant,  minDate, maxDate} = useDinnerReservation({
+    restaurant: restaurantData
+  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await createReservation(values);
+
+      const createReservationDTO : CreateReservationDTO = {
+        attentionScheduleId: values.attentionScheduleId,
+        dinnerId: values.dinnerId,
+        date: values.date,
+        people: values.people,
+        message: values.message,
+        name: values.name,
+        lastName: values.lastName,
+        email: values.email,
+        phone: values.phone,
+      }
+
+      await createReservation(createReservationDTO);
       toast("Reserva creada con éxito, te esperamos!");
-      if (dinner) {
+      if (dinnerData) {
         router.push("/reservations");
       }
     } catch (error) {
@@ -103,14 +68,24 @@ export default function Reservation({
     }
   };
 
+  const onChangeDate = (date: Date) => {
+    onChange({
+      date,
+      attentionScheduleId: restaurant.attentionSchedule.find(
+        (schedule) => schedule.dayNumber === date?.getDay()
+      )?.id as string,
+    });
+  }
+
+
   return (
     <div className="px-10">
       <h1 className="pb-3 text-4xl font-bold">
         Reservá en <span className="text-orange-900">{restaurant.name}</span>
       </h1>
       <p className="text-black pb-3 text-center">
-        {dinner
-          ? `¡Hola ${dinner.first_name}! ¿Que día te esperamos?`
+        {dinnerData
+          ? `¡Hola ${dinnerData.first_name}! ¿Que día te esperamos?`
           : `!Hola! ¿Que día quieres reservar?`}
       </p>
       <form
@@ -119,30 +94,22 @@ export default function Reservation({
       >
         <div className="flex justify-between">
           <DatePicker
-            selected={dinnerDate}
-            onChange={(date) => {
-              setDinnerDate(date);
-              onChange({
-                date: date?.toISOString() ?? null,
-                attentionScheduleId: restaurant.attentionSchedule.find(
-                  (schedule) => schedule.dayNumber === date?.getDay()
-                )?.id as string,
-              });
-            }}
+            selected={values.date}
+            onChange={onChangeDate}
             showTimeSelect
             locale="es"
             dateFormat="MMMM d, yyyy HH:mm"
             wrapperClassName="w-full"
             placeholderText="Fecha"
             className="w-full fullborder border bg-lemon-50 border-lemon-200 text-gray-500 rounded-md  capitalize placeholder:text-gray-500 placeholder:text-sm py-1 px-2"
-            minDate={new Date()}
-            maxDate={addDays(new Date(), 30)}
+            minDate={minDate}
+            maxDate={maxDate}
             calendarStartDay={1}
             filterDate={(date) => !hashClosedDays[date.getDay()]}
             filterTime={filterTimes}
             timeIntervals={15}
           />
-          <span className="ps-2">{dinnerDate ? "✔️" : "👈"}</span>
+          <span className="ps-2">{values.date ? "✔️" : "👈"}</span>
         </div>
         <div>
           <TextField
@@ -163,7 +130,7 @@ export default function Reservation({
             placeholder="Adrian"
             value={values.name ?? ""}
             onChange={(e) => onChange({ name: e.target.value })}
-            disabled={!!dinner}
+            disabled={!!dinnerData}
             emoji={values.dinnerId || values.name ? "✔️" : "👈"}
           />
         </div>
@@ -175,7 +142,7 @@ export default function Reservation({
             placeholder="Perez"
             value={values.lastName ?? ""}
             onChange={(e) => onChange({ lastName: e.target.value })}
-            disabled={!!dinner}
+            disabled={!!dinnerData}
             emoji={values.dinnerId || values.lastName ? "✔️" : "👈"}
           />
         </div>
@@ -187,7 +154,7 @@ export default function Reservation({
             placeholder="351-111-1212"
             value={values.phone ?? ""}
             onChange={(e) => onChange({ phone: e.target.value })}
-            disabled={!!dinner}
+            disabled={!!dinnerData}
             emoji={values.dinnerId || values.phone ? "✔️" : "👈"}
           />
         </div>
@@ -199,7 +166,7 @@ export default function Reservation({
             placeholder="maria.perez@gmail.com"
             value={values.email ?? ""}
             onChange={(e) => onChange({ email: e.target.value })}
-            disabled={!!dinner}
+            disabled={!!dinnerData}
             emoji={values.dinnerId || values.email ? "✔️" : "👈"}
           />
         </div>
@@ -229,12 +196,12 @@ export default function Reservation({
           </Link>
           .
         </p>
-        <Button
+         <Button
           variant="contained"
           color="primary"
           type="submit"
-          text={dinner ? "Reservar 🤝" : "Reservar sin registrarme"}
-        />
+          text={values.dinnerId ? "Reservar 🤝" : "Reservar sin registrarme"}
+        /> 
       </form>
     </div>
   );

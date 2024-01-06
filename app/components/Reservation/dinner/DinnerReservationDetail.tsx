@@ -1,12 +1,12 @@
 "use client";
 
 import QRCode from "react-qr-code";
-import { Button } from "..";
+import { Button } from "../..";
 import { ReservationByIdDTO } from "@/app/models/reservation.model";
 import { cancelReservation } from "@/app/actions/reservation";
 import { toast } from "react-toastify";
 
-export default function ReservationDetail({
+export default function DinnerReservationDetail({
   reservation,
 }: {
   readonly reservation: ReservationByIdDTO;

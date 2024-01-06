@@ -1,23 +1,21 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { ReservationForm } from "../components/Reservation/Reservation";
 import { uuid } from "uuidv4";
 import { getSession } from "@auth0/nextjs-auth0";
-import { ReservationStatus } from "../models/reservation.model";
+import { CreateReservationDTO, ReservationStatus } from "@/app/models";
 
-export async function createReservation(form: ReservationForm) {
+export async function createReservation(data: CreateReservationDTO) {
   try {
-    if (!form.dinnerId) {
+    if (!data.dinnerId) {
       // If the user is not logged in
-      if (!form.email) {
+      if (!data.email) {
         throw new Error("Email is required");
       }
 
-      console.log("eject");
       const dinnerByEmail = await prisma.dinner.findUnique({
         where: {
-          email: form.email,
+          email: data.email,
         },
       });
 
@@ -25,9 +23,9 @@ export async function createReservation(form: ReservationForm) {
       if (!dinnerByEmail) {
         newDinner = await prisma.dinner.create({
           data: {
-            email: form.email,
-            first_name: form.name!,
-            last_name: form.lastName,
+            email: data.email,
+            first_name: data.name!,
+            last_name: data.lastName,
             id: uuid(),
           },
         });
@@ -35,18 +33,18 @@ export async function createReservation(form: ReservationForm) {
         newDinner = dinnerByEmail;
       }
 
-      form.dinnerId = newDinner.id;
+      data.dinnerId = newDinner.id;
     }
 
     const reservation = await prisma.reservation.create({
       data: {
-        dinnerId: form.dinnerId,
-        attentionScheduleId: form.attentionScheduleId,
+        dinnerId: data.dinnerId,
+        attentionScheduleId: data.attentionScheduleId,
         code: uuid(),
-        date: form.date!,
-        message: form.message!,
-        people: String(form.people!),
-        statusId: 1,
+        date: data.date.toISOString(),
+        message: data.message,
+        people: data.people,
+        statusId: ReservationStatus.CREATED,
       },
     });
 

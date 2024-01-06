@@ -58,8 +58,8 @@ model Reservation {
   dinner              Dinner            @relation(fields: [dinnerId], references: [id])
   dinnerId            String
   date                String
-  people              String
-  message             String
+  people              Int
+  message             String?
   code                String
   status              ReservationStatus @relation(fields: [statusId], references: [id])
   statusId            Int

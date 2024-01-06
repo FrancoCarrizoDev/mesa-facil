@@ -10,6 +10,31 @@ export interface ReservationByIdDTO {
   };
 }
 
+export interface ReservationForm {
+  id: string;
+  attentionScheduleId: string;
+  dinnerId?: string;
+  date: Date;
+  people: number;
+  message?: string;
+  name?: string;
+  lastName?: string | null;
+  email?: string | null;
+  phone?: string | null;
+}
+
+export interface CreateReservationDTO {
+  dinnerId?: string;
+  attentionScheduleId: string;
+  date: Date;
+  people: number;
+  message?: string;
+  name?: string;
+  lastName?: string | null;
+  email?: string | null;
+  phone?: string | null;
+}
+
 export enum ReservationStatus {
   CREATED = 1,
   ACEPTED = 2,

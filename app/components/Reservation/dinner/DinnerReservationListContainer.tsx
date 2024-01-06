@@ -1,5 +1,6 @@
 import { ReservationItemDTO } from "@/app/models/reservation-item.model";
-import { ReservationItem } from ".";
+import DinnerReservationItem from "./DinnerReservationItem";
+
 
 export default function ReservationListContainer({
   reservationList,
@@ -14,7 +15,7 @@ export default function ReservationListContainer({
       </div>
       <ul className="pt-3 overflow-x-auto divide-y divide-gray-200">
         {reservationList.map((reservation) => (
-          <ReservationItem key={reservation.id} reservation={reservation} />
+          <DinnerReservationItem key={reservation.id} reservation={reservation} />
         ))}
       </ul>
     </div>
