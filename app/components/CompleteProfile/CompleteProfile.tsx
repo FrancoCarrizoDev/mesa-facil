@@ -1,7 +1,7 @@
 "use client";
-import { updateDinnerById } from "@/app/actions/dinner";
-import { Button, TextField } from "@/app/components";
-import { useForm } from "@/app/hooks";
+import { updateDinnerById } from "@actions";
+import { Button, TextField } from "@components";
+import { useForm } from "@hooks";
 import { Dinner } from "@prisma/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";

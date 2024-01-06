@@ -1,4 +1,4 @@
-import { Restaurant } from "@/app/models/restaurant.model";
+import { Restaurant } from "@models";
 import { getSession } from "@auth0/nextjs-auth0";
 import prisma from "@/lib/prisma";
 import { uuid } from "uuidv4";

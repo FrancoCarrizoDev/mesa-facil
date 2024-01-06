@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { uuid } from "uuidv4";
 import { getSession } from "@auth0/nextjs-auth0";
-import { CreateReservationDTO, ReservationStatus } from "@/app/models";
+import { CreateReservationDTO, ReservationStatus } from "@models";
 
 export async function createReservation(data: CreateReservationDTO) {
   try {

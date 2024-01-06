@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Button, Select, TextField } from "..";
-import { WEEK_DAYS } from "@/app/constants";
-import { AttentionSchedule } from "@/app/models/attention-schedule.model";
+import { WEEK_DAYS } from "@constants";
+import { AttentionSchedule } from "@models";
 
 type Props = {
   readonly onChange: (e: AttentionSchedule | AttentionSchedule[]) => void;

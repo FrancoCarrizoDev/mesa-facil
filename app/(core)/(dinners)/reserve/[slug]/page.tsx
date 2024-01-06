@@ -1,9 +1,9 @@
 import {
   checkIncompleteProfile,
   getDinnerBySubIdOrEmail,
-} from "@/app/actions/dinner";
-import { getRestaurantBySlug } from "@/app/actions/restaurants";
-import { DinnerReservationForm } from "@/app/components";
+  getRestaurantBySlug
+} from "@actions";
+import { DinnerReservationForm } from "@components";
 import { getSession } from "@auth0/nextjs-auth0";
 import { redirect } from "next/navigation";
 import NotFound from "./not-found";

@@ -24,6 +24,8 @@
       "@services": ["./app/services/index.ts"],
       "@helpers": ["./app/helpers/index.ts"],
       "@models" : ["./app/models/index.ts"],
+      "@hooks": ["./app/hooks/index.ts"],
+      "@constants": ["./app/constants/index.ts"],
       "@/*": ["./*"],
     }
   },

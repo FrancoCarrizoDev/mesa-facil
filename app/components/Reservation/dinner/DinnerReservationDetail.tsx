@@ -2,8 +2,8 @@
 
 import QRCode from "react-qr-code";
 import { Button } from "../..";
-import { ReservationByIdDTO } from "@/app/models/reservation.model";
-import { cancelReservation } from "@/app/actions/reservation";
+import { ReservationByIdDTO } from "@models";
+import { cancelReservation } from "@actions";
 import { toast } from "react-toastify";
 
 export default function DinnerReservationDetail({

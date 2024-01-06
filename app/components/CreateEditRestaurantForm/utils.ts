@@ -1,4 +1,4 @@
-import { AttentionSchedule } from "@/app/models/attention-schedule.model";
+import { AttentionSchedule } from "@models";
 
 export const checkIfClosingTimeIsBeforeOpeningTime = (
   attentionSchedule: AttentionSchedule

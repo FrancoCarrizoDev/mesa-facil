@@ -1,7 +1,7 @@
 export interface ReservationByIdDTO {
   id: string;
   date: string;
-  people: string;
+  people: number;
   attentionSchedule: {
     restaurant: {
       name: string;

@@ -1,5 +1,5 @@
-import { getReservationById } from "@/app/actions/reservation";
-import {DinnerReservationDetail} from "@/app/components";
+import { getReservationById } from "@actions";
+import {DinnerReservationDetail} from "@components";
 import { notFound } from "next/navigation";
 import React from "react";
 

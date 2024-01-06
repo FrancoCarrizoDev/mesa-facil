@@ -2,12 +2,11 @@
 import React, { ChangeEvent, useMemo, useState } from "react";
 import { Button, CreateAtentionSchedules, TextField } from "..";
 import { useRouter } from "next/navigation";
-import { useForm } from "@/app/hooks";
-import { Restaurant } from "@/app/models/restaurant.model";
-import { AttentionSchedule } from "@/app/models/attention-schedule.model";
-import { WEEK_DAYS } from "@/app/constants";
+import { useForm } from "@hooks";
+import { Restaurant, AttentionSchedule } from "@models";
+import { WEEK_DAYS } from "@constants";
 import { checkIfClosingTimeIsBeforeOpeningTime } from "./utils";
-import { createRestaurant } from "@/app/services/restaurant.service";
+import { createRestaurant } from "@services";
 import { toast } from "react-toastify";
 import { useUser } from "@auth0/nextjs-auth0/client";
 

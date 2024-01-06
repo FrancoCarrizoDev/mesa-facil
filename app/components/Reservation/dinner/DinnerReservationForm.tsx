@@ -1,12 +1,11 @@
 "use client";
 import "react-datepicker/dist/react-datepicker.css";
-import { createReservation } from "@/app/actions/reservation";
-import { CreateReservationDTO, ReservationForm } from "@/app/models/reservation.model";
+import { createReservation } from "@actions";
+import { CreateReservationDTO, ReservationForm, Restaurant } from "@models";
 import { Dinner } from "@prisma/client";
-import { Restaurant } from "@/app/models/restaurant.model";
-import { TextField , Button  } from '@/app/components'
+import { TextField , Button  } from '@components'
 import { toast } from "react-toastify";
-import { useDinnerReservation, useForm } from "@/app/hooks";
+import { useDinnerReservation, useForm } from "@hooks";
 import { useRouter } from "next/navigation";
 import DatePicker, { registerLocale } from "react-datepicker";
 import es from "date-fns/locale/es";
