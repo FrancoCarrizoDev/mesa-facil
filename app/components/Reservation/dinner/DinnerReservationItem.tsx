@@ -1,5 +1,5 @@
-import { getReservationLabel } from "@/app/helpers/reservation-status.helper";
-import { ReservationItemDTO } from "@/app/models/reservation-item.model";
+import { getReservationLabel } from "@helpers";
+import { ReservationItemDTO } from "@models";
 import Link from "next/link";
 import React from "react";
 

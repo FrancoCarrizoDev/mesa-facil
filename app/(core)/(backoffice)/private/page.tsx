@@ -2,8 +2,7 @@ import Link from "next/link";
 import { getSession } from "@auth0/nextjs-auth0";
 import { redirect } from "next/navigation";
 import { Restaurant } from "@prisma/client";
-import { encureExistsUser } from "@/app/actions/user";
-import { getRestaurantsByUser } from "@/app/actions/restaurants";
+import { encureExistsUser, getRestaurantsByUser } from "@actions";
 
 export default async function Private() {
   const { user } = (await getSession()) ?? {};

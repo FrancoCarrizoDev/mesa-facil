@@ -1,5 +1,5 @@
-import { CreateEditRestaurantForm, SectionTitle } from "@/app/components";
-import { getRestaurantById } from "@/app/actions/restaurants";
+import { CreateEditRestaurantForm, SectionTitle } from "@components";
+import { getRestaurantById } from "@actions";
 import React from "react";
 
 export default async function Page({

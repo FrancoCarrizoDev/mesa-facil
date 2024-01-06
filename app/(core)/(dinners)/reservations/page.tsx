@@ -1,6 +1,6 @@
-import { getReservations } from "@/app/actions/reservation";
-import { DinnerReservationListContainer } from "@/app/components";
-import { ReservationItemDTO } from "@/app/models/reservation-item.model";
+import { getReservations } from "@actions";
+import { DinnerReservationListContainer } from "@components";
+import { ReservationItemDTO } from "@models";
 import { getSession } from "@auth0/nextjs-auth0";
 
 export default async function Page() {

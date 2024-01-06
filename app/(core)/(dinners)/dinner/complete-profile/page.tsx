@@ -1,5 +1,5 @@
-import { getDinnerBySubIdOrEmail } from "@/app/actions/dinner";
-import { CompleteProfile } from "@/app/components";
+import { getDinnerBySubIdOrEmail } from "@actions";
+import { CompleteProfile } from "@components";
 import { getSession } from "@auth0/nextjs-auth0";
 import { notFound, redirect } from "next/navigation";
 

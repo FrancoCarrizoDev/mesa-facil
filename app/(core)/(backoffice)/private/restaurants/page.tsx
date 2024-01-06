@@ -1,5 +1,5 @@
-import { getRestaurantsByUserId } from "@/app/actions/restaurants";
-import { RestaurantCard } from "@/app/components";
+import { getRestaurantsByUserId } from "@actions";
+import { RestaurantCard } from "@components";
 import { getSession } from "@auth0/nextjs-auth0";
 import Link from "next/link";
 
