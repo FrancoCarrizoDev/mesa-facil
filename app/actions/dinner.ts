@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { Claims } from "@auth0/nextjs-auth0";
 import { Dinner } from "@prisma/client";
-import { uuid } from "uuidv4";
+import { v4 as uuid } from "uuid";
 
 export async function checkIncompleteProfile(
   oauthUser: Claims

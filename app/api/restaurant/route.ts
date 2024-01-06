@@ -1,7 +1,7 @@
 import { Restaurant } from "@models";
 import { getSession } from "@auth0/nextjs-auth0";
 import prisma from "@/lib/prisma";
-import { uuid } from "uuidv4";
+import { v4 as uuid } from "uuid";
 import slugify from "slugify";
 
 export const POST = async (req: Request) => {

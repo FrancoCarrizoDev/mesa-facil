@@ -6,7 +6,7 @@ import { useForm } from "@hooks";
 import { Restaurant, AttentionSchedule } from "@models";
 import { WEEK_DAYS } from "@constants";
 import { checkIfClosingTimeIsBeforeOpeningTime } from "./utils";
-import { createRestaurant } from "@services";
+import { createRestaurant } from "@actions";
 import { toast } from "react-toastify";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
@@ -140,15 +140,9 @@ export default function CreateEditRestaurantForm({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await createRestaurant(values);
-
-      if (response.status !== 201) {
-        toast("Error al crear el restaurante", { type: "error" });
-        return;
-      }
-
-      router.push("/private/restaurants");
+      await createRestaurant(values);
       toast("Restaurante creado con éxito", { type: "success" });
+      router.push("/private/restaurants");
     } catch (error) {
       console.log(error);
     }

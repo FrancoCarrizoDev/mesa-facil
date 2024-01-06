@@ -2,7 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { Claims } from "@auth0/nextjs-auth0";
-import { uuid } from "uuidv4";
+import { v4 as uuid } from "uuid";
 
 export async function encureExistsUser(oauthUser: Claims) {
   try {
@@ -16,7 +16,7 @@ export async function encureExistsUser(oauthUser: Claims) {
       await prisma.user.create({
         data: {
           email: oauthUser.email,
-          first_name: oauthUser.given_name,
+          first_name: oauthUser.given_name ?? "",
           last_name: oauthUser.family_name ?? "",
           id: uuid(),
           sub: oauthUser.sub,
