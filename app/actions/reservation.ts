@@ -124,7 +124,7 @@ export const cancelReservation = async (id: string) => {
         id,
       },
       data: {
-        statusId: ReservationStatus.REPROGRAMED,
+        statusId: ReservationStatus.CANCELED,
       },
     });
 

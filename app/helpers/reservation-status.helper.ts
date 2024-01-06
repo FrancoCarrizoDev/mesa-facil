@@ -10,6 +10,8 @@ export const getReservationLabel = (statusLabel: number): string => {
       return "Rechazada";
     case ReservationStatus.REPROGRAMED:
       return "Reprogramada";
+    case ReservationStatus.CANCELED:
+      return "Cancelada";
     default:
       return "Creada";
   }

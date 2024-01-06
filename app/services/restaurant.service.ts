@@ -2,7 +2,7 @@ import { Restaurant } from "../models/restaurant.model";
 
 export async function createRestaurant(restaurant: Restaurant) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_AUTH0_BASE_URL}/api/restaurant`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant`,
     {
       method: "POST",
       body: JSON.stringify(restaurant),
@@ -16,7 +16,7 @@ export async function createRestaurant(restaurant: Restaurant) {
 
 export async function getRestaurants() {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_AUTH0_BASE_URL}/api/restaurant`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant`
   );
 
   if (!response.ok) {

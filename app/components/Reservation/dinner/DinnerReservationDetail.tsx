@@ -5,16 +5,19 @@ import { Button } from "../..";
 import { ReservationByIdDTO } from "@models";
 import { cancelReservation } from "@actions";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function DinnerReservationDetail({
   reservation,
 }: {
   readonly reservation: ReservationByIdDTO;
 }) {
+  const router = useRouter();
   const onCancelReservation = async () => {
     const actionResponse = await cancelReservation(reservation.id);
     if (actionResponse) {
       toast("Reserva cancelada");
+      router.push("/reservations");
     } else {
       toast("No se pudo cancelar la reserva", {
         type: "error",
@@ -22,9 +25,13 @@ export default function DinnerReservationDetail({
     }
   };
 
+  const reservationUrlCode = `${process.env.NEXT_PUBLIC_BASE_URL}/private/reserve/${reservation.id}`;
+
+  console.log({reservationUrlCode})
+
   return (
     <div className="flex flex-col items-center justify-center p-8">
-      <QRCode value={reservation.id} size={256} />
+      <QRCode value={reservationUrlCode} size={256} />
       <p className="mt-4 text-md font-medium text-gray-600">
         {reservation.attentionSchedule.restaurant.name}
       </p>
