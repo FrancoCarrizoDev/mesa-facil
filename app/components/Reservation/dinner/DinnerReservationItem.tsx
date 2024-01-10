@@ -1,5 +1,5 @@
-import { getReservationLabel } from "@helpers";
-import { ReservationItemDTO } from "@models";
+import { getReservationLabelStatus } from "@helpers";
+import { ReservationItemDTO, ReservationStatus } from "@models";
 import Link from "next/link";
 import React from "react";
 
@@ -37,10 +37,15 @@ export default function DinnerReservationItem({
           </p>
         </div>
         <div className="inline-flex items-center font-semibold text-gray-900 ">
-          {getReservationLabel(reservation.status.id)}
+          {getReservationLabelStatus(reservation.status.id)}
         </div>
+
         <div className="flex-shrink-0">
-          <Link href={`/reservations/${reservation.id}`}>Ver QR</Link>
+          {reservation.status.id === ReservationStatus.CREATED ? (
+            <p className="text-md">QR no disponible</p>
+          ) : (
+            <Link href={`/reservations/${reservation.id}`}>Ver QR</Link>
+          )}
         </div>
       </div>
     </li>

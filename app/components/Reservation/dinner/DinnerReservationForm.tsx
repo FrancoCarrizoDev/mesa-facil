@@ -3,7 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { createReservation } from "@actions";
 import { CreateReservationDTO, ReservationForm, Restaurant } from "@models";
 import { Dinner } from "@prisma/client";
-import { TextField , Button  } from '@components'
+import { TextField, Button } from "@components";
 import { toast } from "react-toastify";
 import { useDinnerReservation, useForm } from "@hooks";
 import { useRouter } from "next/navigation";
@@ -27,7 +27,7 @@ const getInitialValues = (dinner: Dinner | null) => ({
 
 export default function DinnerReservationForm({
   restaurant: restaurantData,
-  dinner : dinnerData,
+  dinner: dinnerData,
 }: {
   readonly restaurant: Restaurant;
   readonly dinner: Dinner | null;
@@ -37,15 +37,15 @@ export default function DinnerReservationForm({
     getInitialValues(dinnerData)
   );
 
-  const {  filterTimes, hashClosedDays,  restaurant,  minDate, maxDate} = useDinnerReservation({
-    restaurant: restaurantData
-  });
+  const { filterTimes, hashClosedDays, restaurant, minDate, maxDate } =
+    useDinnerReservation({
+      restaurant: restaurantData,
+    });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-
-      const createReservationDTO : CreateReservationDTO = {
+      const createReservationDTO: CreateReservationDTO = {
         attentionScheduleId: values.attentionScheduleId,
         dinnerId: values.dinnerId,
         date: values.date,
@@ -55,7 +55,7 @@ export default function DinnerReservationForm({
         lastName: values.lastName,
         email: values.email,
         phone: values.phone,
-      }
+      };
 
       await createReservation(createReservationDTO);
       toast("Reserva creada con éxito, te esperamos!");
@@ -74,8 +74,7 @@ export default function DinnerReservationForm({
         (schedule) => schedule.dayNumber === date?.getDay()
       )?.id as string,
     });
-  }
-
+  };
 
   return (
     <div className="px-10">
@@ -108,7 +107,9 @@ export default function DinnerReservationForm({
             filterTime={filterTimes}
             timeIntervals={15}
           />
-          <span className="ps-2">{values.date ? "✔️" : "👈"}</span>
+          <span className="ps-2">
+            {values.date && values.attentionScheduleId ? "✔️" : "👈"}
+          </span>
         </div>
         <div>
           <TextField
@@ -195,12 +196,12 @@ export default function DinnerReservationForm({
           </Link>
           .
         </p>
-         <Button
+        <Button
           variant="contained"
           color="primary"
           type="submit"
           text={values.dinnerId ? "Reservar 🤝" : "Reservar sin registrarme"}
-        /> 
+        />
       </form>
     </div>
   );

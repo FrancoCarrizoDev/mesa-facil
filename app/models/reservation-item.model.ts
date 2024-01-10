@@ -1,6 +1,6 @@
 export interface ReservationItemDTO {
   id: string;
-  people: string;
+  people: number;
   date: string;
   attentionSchedule: AttentionSchedule;
   status: Status;
@@ -12,6 +12,7 @@ interface AttentionSchedule {
 
 interface Restaurant {
   name: string;
+  address: string;
 }
 
 interface Status {

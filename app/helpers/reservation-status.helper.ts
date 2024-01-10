@@ -1,9 +1,9 @@
 import { ReservationStatus } from "../models/reservation.model";
 
-export const getReservationLabel = (statusLabel: number): string => {
+export const getReservationLabelStatus = (statusLabel: number): string => {
   switch (statusLabel) {
     case ReservationStatus.CREATED:
-      return "Creada";
+      return "creada";
     case ReservationStatus.ACEPTED:
       return "Confirmada";
     case ReservationStatus.REJECTED:

@@ -53,6 +53,7 @@ async function authenticateRequest(
   token: string,
   req: NextRequest
 ): Promise<ErrorToken> {
+  console.log({url : process.env.AUTH0_JWKS_URI})
   const jwks = jose.createRemoteJWKSet(new URL(process.env.AUTH0_JWKS_URI!));
   try {
     await jose.jwtVerify(token.replace("Bearer ", ""), jwks);

@@ -21,6 +21,7 @@ export async function createReservation(data: CreateReservationDTO) {
 
       let newDinner;
       if (!dinnerByEmail) {
+        
         newDinner = await prisma.dinner.create({
           data: {
             email: data.email,
@@ -32,12 +33,12 @@ export async function createReservation(data: CreateReservationDTO) {
       } else {
         newDinner = dinnerByEmail;
       }
-
       data.dinnerId = newDinner.id;
     }
-
+    console.log({data})
     const reservation = await prisma.reservation.create({
       data: {
+        id: uuid(),
         dinnerId: data.dinnerId,
         attentionScheduleId: data.attentionScheduleId,
         code: uuid(),
@@ -77,6 +78,7 @@ export const getReservations = async () => {
           restaurant: {
             select: {
               name: true,
+              address: true,
             },
           },
         },
